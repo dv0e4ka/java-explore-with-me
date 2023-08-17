@@ -11,6 +11,10 @@
 	</parent>
 
 	<name>Explore With Me</name>
+    <modules>
+        <module>stats-service</module>
+		<module>main-server</module>
+	</modules>
 
 	<groupId>ru.practicum</groupId>
 	<artifactId>explore-with-me</artifactId>
@@ -20,6 +24,8 @@
 	<properties>
 		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>19</maven.compiler.source>
+		<maven.compiler.targer>19</maven.compiler.targer>
 	</properties>
 
 	<build>
