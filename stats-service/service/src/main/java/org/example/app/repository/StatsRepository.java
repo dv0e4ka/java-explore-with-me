@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
 public interface StatsRepository extends JpaRepository<EndpointHit, Long> {
 
     @Query("select new org.example.app.model.ViewStats(ep.app, ep.uri, count(ep.ip) as ips) " +

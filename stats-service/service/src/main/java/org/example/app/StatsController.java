@@ -18,12 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class StatsController {
-    StatsService statsService;
-
-    @Autowired
-    public StatsController(StatsService statsService) {
-        this.statsService = statsService;
-    }
+    private final StatsService statsService;
 
     @PostMapping("/hit")
     public ResponseEntity<EndpointHitDto> add(@RequestBody EndpointHitDto endPointHitDto) {

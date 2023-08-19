@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ViewStatsDto {
-    String app;
-    String uri;
-    long hits;
+    private String app;
+    private String uri;
+    private long hits;
 }

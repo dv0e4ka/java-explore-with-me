@@ -7,11 +7,11 @@ import org.example.dto.EndpointHitDto;
 import org.example.dto.ViewStatsDto;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import static org.example.app.util.DataTime.formatter;
 
 @UtilityClass
 public class StatsMapper {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static EndpointHit toEndPointHit(EndpointHitDto endpointHitDto) {
         return EndpointHit.builder()

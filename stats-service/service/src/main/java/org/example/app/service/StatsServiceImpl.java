@@ -8,6 +8,7 @@ import org.example.app.repository.StatsRepository;
 import org.example.dto.EndpointHitDto;
 import org.example.dto.ViewStatsDto;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class StatsServiceImpl implements StatsService {
     private final StatsRepository statsRepository;
 
+    @Transactional
     public EndpointHitDto add(EndpointHitDto endpointHitDto) {
         EndpointHit toSave = StatsMapper.toEndPointHit(endpointHitDto);
         EndpointHit endpointHitSaved = statsRepository.save(toSave);
