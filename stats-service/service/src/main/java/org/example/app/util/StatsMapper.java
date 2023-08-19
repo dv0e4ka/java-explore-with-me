@@ -11,8 +11,8 @@ import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 public class StatsMapper {
-
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     public static EndpointHit toEndPointHit(EndpointHitDto endpointHitDto) {
         return EndpointHit.builder()
                 .app(endpointHitDto.getApp())
