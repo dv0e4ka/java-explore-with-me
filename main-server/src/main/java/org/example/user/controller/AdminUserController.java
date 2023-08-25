@@ -22,20 +22,20 @@ public class AdminUserController {
 
     private final UserService userService;
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto save(@Valid @RequestBody UserDto userDto) {
+        log.info("получен запрос на добавление нового пользователя: {}", userDto.getName());
+        return userService.save(userDto);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDto> findAll(@RequestParam (required = false) List<Long> ids,
-                                 @RequestParam(defaultValue = "0") @PositiveOrZero int size,
-                                 @RequestParam(defaultValue = "10") @Positive int from) {
+                                 @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                 @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("получен запрос на получение информации о пользователях");
-        return userService.findAll(ids, size, from);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto save(@Valid UserDto userDto) {
-        log.info("получен запрос на добавление нового пользователя: {}", userDto.getName());
-        return userService.save(userDto);
+        return userService.findAll(ids, from, size);
     }
 
     @DeleteMapping("/{userId}")

@@ -5,6 +5,9 @@ import org.example.user.dto.UserDto;
 import org.example.user.dto.UserShortDto;
 import org.example.user.model.User;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @UtilityClass
 public class UserMapper {
 
@@ -28,5 +31,11 @@ public class UserMapper {
                 .email(user.getEmail())
                 .name(user.getName())
                 .build();
+    }
+
+    public static List<UserDto> toUserDtoList(List<User> users) {
+        return users.stream()
+                .map(UserMapper::toUserDto)
+                .collect(Collectors.toList());
     }
 }
