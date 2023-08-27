@@ -6,6 +6,8 @@ import org.example.request.dto.ParticipationRequestDto;
 import org.example.request.service.RequestService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -13,16 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class PrivateRequestController {
     private final RequestService requestService;
 
-    @GetMapping("/{userId}/requests")
-    public ParticipationRequestDto get(@PathVariable long userId) {
-        log.info("получен запрос на получение информации заявок на участии в чужих событиях пользователя id={}", userId);
-        return requestService.get(userId);
-    }
-
     @PostMapping("/{userId}/requests")
     public ParticipationRequestDto save(@PathVariable long userId, @RequestParam long eventId) {
         log.info("получен запрос на добавления заявки пользователя id={} на участие в событии", userId);
-        return requestService.save(userId, eventId);
+        return requestService.saveUserRequest(userId, eventId);
     }
 
     @PatchMapping("/{userId}/requests/{requestId}/cancel")
@@ -30,5 +26,11 @@ public class PrivateRequestController {
         log.info("отмена пользователя id={} на участии в событии id={}", userId, requestId);
         return requestService.patch(userId, requestId);
 
+    }
+
+    @GetMapping("/{userId}/requests")
+    public List<ParticipationRequestDto> getUserRequests(@PathVariable long userId) {
+        log.info("получен запрос на получение информации заявок на участии в чужих событиях пользователя id={}", userId);
+        return requestService.getUserRequests(userId);
     }
 }

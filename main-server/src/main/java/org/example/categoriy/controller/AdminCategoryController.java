@@ -35,8 +35,8 @@ public class AdminCategoryController {
 
     @PatchMapping("/{catId}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto patch(@PathVariable long catId, CategoryDto categoryDto) {
-        log.info("пришел запрос на патч категории: id={}", catId);
+    public CategoryDto patch(@PathVariable Long catId, @Valid @RequestBody CategoryDto categoryDto) {
+        log.info("пришел запрос на патч категории: id={}, на новое имя={}", catId, categoryDto.getName());
         return categoryService.patch(catId, categoryDto);
     }
 }

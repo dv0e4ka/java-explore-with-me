@@ -1,23 +1,18 @@
 package org.example.event.service;
 
-import org.example.event.dto.EventFullDto;
-import org.example.event.dto.EventShortDto;
-import org.example.event.dto.NewEventDto;
+import org.example.event.dto.*;
+
 import java.util.List;
 
 
 public interface EventService {
-    public List<EventShortDto> getCurrUserEvents(long userId, int from, int size);
-
     public EventShortDto save(long userId, NewEventDto newEventDto);
 
+    public EventFullDto patchUserEvent(UpdateEventUserRequest updateEvent, long userId, long eventId);
+
+    public List<EventShortDto> getCurrUserEvents(long userId, int from, int size);
+
     public EventFullDto getEventFull(long userId, long eventId);
-
-    public EventShortDto patch(long userId, long eventId);
-
-    public EventShortDto getUserEventRequests(long userId, long eventId);
-
-    public EventShortDto patchUserEventRequests(long userId, long eventId);
 
     public List<EventFullDto> findEventsFull(List<Long> users,
                                              List<String> state,

@@ -5,6 +5,7 @@ import lombok.Data;
 import org.example.categoriy.dto.CategoryDto;
 import org.example.user.dto.UserShortDto;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -13,21 +14,21 @@ public class EventShortDto {
     private long id;
     private long views;
 
-    @NotNull(message = "поле annotation должен быть пустым")
+    @NotBlank(message = "поле annotation не должно быть пустым")
     private String annotation;
 
-    @NotNull(message = "поле category должен быть пустым")
+    @NotNull(message = "поле category не должно быть пустым")
     private CategoryDto category;
 
-    @NotNull(message = "поле eventDate должен быть пустым")
+    @NotBlank(message = "поле eventDate не должно быть пустым")
     private String eventDate;
 
-    @NotNull(message = "поле initiator должен быть пустым")
+    @NotNull(message = "поле initiator не должно быть пустым")
     private UserShortDto initiator;
 
-    @NotNull(message = "поле paid должен быть пустым")
+    @NotNull(message = "поле paid не должно быть пустым")
     private Boolean paid;
 
-    @NotNull(message = "поле title должен быть пустым")
+    @NotNull(message = "поле title не должно быть пустым")
     private String title;
 }

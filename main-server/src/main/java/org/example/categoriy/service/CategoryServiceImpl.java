@@ -9,7 +9,9 @@ import org.example.categoriy.util.CategoryMapper;
 import org.example.exception.model.EntityNotFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -17,25 +19,29 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     @Override
-    public CategoryDto save(NewCategoryDto newCategoryDto) {
+    public CategoryDto save(@Valid NewCategoryDto newCategoryDto) {
         Category categoryToSave = CategoryMapper.toCategory(newCategoryDto);
         Category categorySaved = categoryRepository.save(categoryToSave);
         return CategoryMapper.toCategoryDto(categorySaved);
     }
 
+//    TODO: проверить удаление при наличии связаных событий
+    @Transactional
     @Override
     public void delete(long catId) {
         findCatById(catId);
         categoryRepository.deleteById(catId);
     }
 
+    @Transactional
     @Override
     public CategoryDto patch(long catId, CategoryDto categoryDto) {
-        Category depricatedCategory = findCatById(catId);
+        findCatById(catId);
 
         Category categoryToPatch = CategoryMapper.toCategory(categoryDto);
-        categoryToPatch.setId(depricatedCategory.getId());
+        categoryToPatch.setId(catId);
 
         return CategoryMapper.toCategoryDto(categoryRepository.save(categoryToPatch));
     }

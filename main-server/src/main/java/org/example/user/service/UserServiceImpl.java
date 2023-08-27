@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDtoList(users);
     }
 
+    @Transactional
     @Override
     public void delete(long userId) {
         userRepository.findById(userId).orElseThrow(

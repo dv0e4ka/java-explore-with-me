@@ -1,4 +1,4 @@
-package org.example.modelForRefacting;
+package org.example.exception.model;
 
 import lombok.Builder;
 import lombok.Getter;

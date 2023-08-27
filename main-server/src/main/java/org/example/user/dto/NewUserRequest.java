@@ -1,4 +1,4 @@
-package org.example.modelForRefacting;
+package org.example.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;

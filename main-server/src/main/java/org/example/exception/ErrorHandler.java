@@ -1,8 +1,7 @@
 package org.example.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.exception.model.EntityNotFoundException;
-import org.example.exception.model.ErrorResponse;
+import org.example.exception.model.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,8 +21,36 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handle(DateTimeEventException e) {
+        log.error("получен статус 409 {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handle(DataIntegrityViolationException e) {
-        log.error("получен статус 409 Not found {}", e.getMessage(), e);
+        log.error("получен статус 409 {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage() + "  идет исключение уникальности ключа в бд");
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handle(PatchEventStateException e) {
+        log.error("получен статус 409 {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handle(OwnerShipConflictException e) {
+        log.error("получен статус 409 {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handle(RequestException e) {
+        log.error("получен статус 409 {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
     }
 }

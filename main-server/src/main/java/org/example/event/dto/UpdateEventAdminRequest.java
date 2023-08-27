@@ -1,8 +1,9 @@
-package org.example.modelForRefacting;
+package org.example.event.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.enums.AdminStateAction;
 import org.example.location.Location;
 
 @Getter
@@ -17,6 +18,6 @@ public class UpdateEventAdminRequest {
     boolean paid;
     int participantLimit;
     boolean requestModeration;
-    String stateAction;
+    AdminStateAction stateAction;
     String title;
 }

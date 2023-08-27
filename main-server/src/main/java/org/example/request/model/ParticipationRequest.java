@@ -2,7 +2,7 @@ package org.example.request.model;
 
 import lombok.*;
 import org.example.event.model.Event;
-import org.example.request.RequestStatus;
+import org.example.enums.RequestStatus;
 import org.example.user.model.User;
 
 import javax.persistence.*;

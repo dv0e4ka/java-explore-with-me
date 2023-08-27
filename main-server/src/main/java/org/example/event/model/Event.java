@@ -23,34 +23,34 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "confirmedRequests")
+    @Column(name = "annotation")
+    private String annotation;
+
+    @Column(name = "confirmed_requests")
     private long confirmedRequests;
 
     @Column(name = "views")
     private long views;
 
-    @Column(name = "participantLimit")
-    private int participantLimit;
-
-    @Column(name = "createdOn")
-    private LocalDateTime createdOn;
+    @Column(name = "participant_limit")
+    private Integer participantLimit;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "publishedOn")
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
+
+    @Column(name = "published_on")
     private LocalDateTime publishedOn;
 
     @Enumerated(EnumType.STRING)
     private State state;
 
-    @Column(name = "requestModeration")
+    @Column(name = "request_moderation")
     private Boolean requestModeration;
 
-    @Column(name = "annotation")
-    private String annotation;
-
-    @Column(name = "eventDate")
+    @Column(name = "event_date")
     private LocalDateTime eventDate;
 
     @Column(name = "title")
