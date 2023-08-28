@@ -3,20 +3,26 @@ package org.example.event.service;
 import lombok.RequiredArgsConstructor;
 import org.example.categoriy.model.Category;
 import org.example.categoriy.repository.CategoryRepository;
+import org.example.enums.EventSort;
 import org.example.enums.PrivateStateAction;
+import org.example.enums.RequestStatus;
 import org.example.enums.State;
 import org.example.event.dto.*;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
 import org.example.event.util.EventMapper;
 import org.example.exception.model.DateTimeEventException;
+import org.example.exception.model.InvalidParameterException;
 import org.example.exception.model.OwnerShipConflictException;
 import org.example.exception.model.PatchEventStateException;
 import org.example.location.Location;
 import org.example.location.LocationRepository;
+import org.example.request.repository.RequestRepository;
 import org.example.user.model.User;
 import org.example.user.repository.UserRepository;
+import org.example.util.DateTimeFormat;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +39,7 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final LocationRepository locationRepository;
+    private final RequestRepository requestRepository;
 
     @Transactional
     @Override
@@ -152,8 +159,6 @@ public class EventServiceImpl implements EventService {
         }
 
         updateEvent.setId(foundEvent.getId());
-        updateEvent.setConfirmedRequests(foundEvent.getConfirmedRequests());
-        updateEvent.setViews(foundEvent.getViews());
         updateEvent.setCreatedOn(foundEvent.getCreatedOn());
         updateEvent.setPublishedOn(foundEvent.getPublishedOn());
         updateEvent.setCompilation(foundEvent.getCompilation());
@@ -206,13 +211,89 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventShortDto> findEventsShort(List<Long> users,
-                                               List<String> state,
-                                               List<Long> categories,
-                                               String rangeStart,
-                                               String rangeEnd,
-                                               int from,
-                                               int size) {
+    public List<EventShortDto> findEventsByPublicParameters(String text,
+                                                            List<Long> categories,
+                                                            Boolean paid,
+                                                            String rangeStart,
+                                                            String rangeEnd,
+                                                            Boolean onlyAvailable,
+                                                            EventSort sort,
+                                                            int from, int size) {
+        PageRequest page = PageRequest.of(from, size);
+        switch (sort) {
+            case VIEWS:
+//                page.withSort(Sort.by("views").descending());
+                page.withSort(Sort.by(Sort.Direction.ASC, "views"));
+                break;
+            default:
+//                page.withSort(Sort.by("eventDate").ascending());
+                page.withSort(Sort.by(Sort.Direction.ASC, "eventDate"));
+
+        }
+
+//        текстовый поиск (по аннотации и подробному описанию) должен быть без учета регистра букв
+
+
+//        если в запросе не указан диапазон дат [rangeStart-rangeEnd],
+//        то нужно выгружать события, которые произойдут позже текущей даты и времени
+
+        LocalDateTime rangeStartDateTime;
+        LocalDateTime rangeEndDateTime;
+
+        if (rangeStart != null && rangeEnd != null) {
+            rangeStartDateTime = LocalDateTime.parse(rangeStart, DateTimeFormat.formatter);
+            rangeEndDateTime = LocalDateTime.parse(rangeEnd, DateTimeFormat.formatter);
+            if (rangeEndDateTime.isBefore(rangeStartDateTime)) {
+                throw new InvalidParameterException("время завершения событие не может быть раньше начала события");
+            }
+        } else {
+            rangeStartDateTime = LocalDateTime.now();
+            rangeEndDateTime = LocalDateTime.now().plusMonths(1);
+        }
+
+        if (text != null) {
+            text = text.toLowerCase();
+        }
+
+        List<Event> eventList;
+        if (onlyAvailable) {
+            eventList = eventRepository.findAvailableEventsByPublicParameters(text,
+                    categories,
+                    paid,
+                    rangeStartDateTime,
+                    rangeEndDateTime,
+                    State.PUBLISHED,
+                    RequestStatus.CONFIRMED,
+                    page);
+            eventList.stream()
+        } else {
+            eventList = eventRepository.findAllEventsByPublicParameters(text,
+                    categories,
+                    paid,
+                    rangeStartDateTime,
+                    rangeEndDateTime,
+                    State.PUBLISHED,
+                    RequestStatus.CONFIRMED,
+                    page);
+        }
+
+//        TODO:
+//         информация о каждом событии должна включать в себя количество просмотров
+//         и количество уже одобренных заявок на участие
+
+//        TODO:
+//         информацию о том, что по этому эндпоинту был осуществлен и обработан запрос,
+//         нужно сохранить в сервисе статистики
+
+
+
+//        только опубликованные события
+        return EventMapper.toEventShortDtoList(eventList);
+    }
+
+    @Override
+    public EventShortDto findByPublicIdShort(long eventId) {
+        Event event = findEventById(eventId);
         return null;
     }
 
@@ -231,5 +312,9 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findById(eventId).orElseThrow(
                 () -> new EntityNotFoundException(String.format("событие с id=%d не найдено", eventId))
         );
+    }
+
+    private int countConfirmedRequestByEventId(long eventId) {
+        return requestRepository.countByEventAndStatus(eventId, RequestStatus.CONFIRMED);
     }
 }

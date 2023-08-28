@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "requests")
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class ParticipationRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

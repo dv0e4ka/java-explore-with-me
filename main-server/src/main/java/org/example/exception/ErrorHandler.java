@@ -53,4 +53,11 @@ public class ErrorHandler {
         log.error("получен статус 409 {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    public ErrorResponse handle(InvalidParameterException e) {
+        log.error("получен статус ? {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
 }

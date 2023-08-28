@@ -45,8 +45,9 @@ public class RequestServiceImpl implements RequestService {
         }
 
         checkLimit(event);
+        int confirmedRequestsNumber = countConfirmedRequestByEventId(eventId);
 
-        if (event.getConfirmedRequests() == event.getParticipantLimit()) {
+        if (confirmedRequestsNumber == event.getParticipantLimit()) {
             throw new RequestException(String.format("у события id=%d достигнут лимит запросов на участие", eventId));
         }
 
@@ -123,7 +124,8 @@ public class RequestServiceImpl implements RequestService {
         RequestStatus requestStatusUpdate = eventRequestStatusUpdateRequest.getStatus();
         List<ParticipationRequest> confirmedRequests = new ArrayList<>();
         List<ParticipationRequest> rejectedRequests = new ArrayList<>();
-        int currLimit = event.getParticipantLimit() - (int) event.getConfirmedRequests();
+        int confirmedRequestsNumber = countConfirmedRequestByEventId(eventId);
+        int currLimit = event.getParticipantLimit() - confirmedRequestsNumber;
 
         if (currLimit == 0) {
             requestListOld.forEach(request -> request.setStatus(RequestStatus.CANCELED));
@@ -197,5 +199,9 @@ public class RequestServiceImpl implements RequestService {
             return true;
         }
         return false;
+    }
+
+    private int countConfirmedRequestByEventId(long eventId) {
+        return requestRepository.countByEventAndStatus(eventId, RequestStatus.CONFIRMED);
     }
 }

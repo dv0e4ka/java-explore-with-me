@@ -60,6 +60,7 @@ public class EventMapper {
                 .title(eventDto.getTitle())
                 .location(eventDto.getLocation())
                 .build();
+
         if (event.getEventDate() != null) {
                 LocalDateTime eventDate =  LocalDateTime.parse(eventDto.getEventDate(), DateTimeFormat.formatter);
                 event.setEventDate(eventDate);
@@ -75,7 +76,8 @@ public class EventMapper {
     public static EventShortDto toEventShortDto(Event event) {
         return EventShortDto.builder()
                 .id(event.getId())
-                .views(event.getViews())
+//                TODO views
+//                .views(event.getViews())
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
                 .eventDate(event.getEventDate().format(DateTimeFormat.formatter))
@@ -104,6 +106,8 @@ public class EventMapper {
                 .build();
     }
 
+//    TODO: включать сюда еще статистику просмотров
+//     например: публичный запрос событий по параметрам требует
     public static List<EventShortDto> toEventShortDtoList(List<Event> eventList) {
         return eventList.stream()
                 .map(EventMapper::toEventShortDto)

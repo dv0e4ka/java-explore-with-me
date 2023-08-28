@@ -6,31 +6,31 @@ import org.example.categoriy.model.Category;
 import org.example.compilation.model.Compilation;
 import org.example.enums.State;
 import org.example.location.Location;
+import org.example.request.model.ParticipationRequest;
 import org.example.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @Table(name = "events")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requests")
+    private List<ParticipationRequest> requests;
+
     @Column(name = "annotation")
     private String annotation;
-
-    @Column(name = "confirmed_requests")
-    private long confirmedRequests;
-
-    @Column(name = "views")
-    private long views;
 
     @Column(name = "participant_limit")
     private Integer participantLimit;
