@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.compilation.dto.CompilationDto;
 import org.example.compilation.dto.NewCompilationDto;
-import org.example.compilation.service.CompilationService;
+import org.example.compilation.service.AdminCompilationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Slf4j
 public class AdminCompilationController {
 
-    private final CompilationService compilationService;
+    private final AdminCompilationService compilationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

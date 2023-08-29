@@ -3,15 +3,9 @@ package org.example.compilation.service;
 import org.example.compilation.dto.CompilationDto;
 import org.example.compilation.dto.NewCompilationDto;
 
-import java.util.List;
+public interface AdminCompilationService {
 
-public interface CompilationService {
-
-    List<CompilationDto> findAll(Boolean pinned, int from, int size);
-
-    CompilationDto findById(long compId);
-
-    CompilationDto save(NewCompilationDto newCompilationDto);
+    CompilationDto save(NewCompilationDto compilationDto);
 
     void delete(long compId);
 

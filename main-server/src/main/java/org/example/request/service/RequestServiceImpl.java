@@ -30,7 +30,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Transactional
     @Override
-    public ParticipationRequestDto saveUserRequest(long userId, long eventId) {
+    public ParticipationRequestDto addParticipationRequest(long userId, long eventId) {
         User user = findUserById(userId);
         Event event = findEventById(eventId);
 
@@ -65,7 +65,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Transactional
     @Override
-    public ParticipationRequestDto patch(long userId, long requestId) {
+    public ParticipationRequestDto cancelRequest(long userId, long requestId) {
         findUserById(userId);
         ParticipationRequest request = requestRepository.findById(requestId).orElseThrow(
                 () -> new EntityNotFoundException(String.format(
@@ -82,82 +82,6 @@ public class RequestServiceImpl implements RequestService {
         findUserById(userId);
         List<ParticipationRequest> requests = requestRepository.findAllByRequester(userId);
         return RequestMapper.toRequestDtoList(requests);
-    }
-
-
-    @Transactional
-    @Override
-    public EventRequestStatusUpdateResult patchUserEventUpdateRequests(
-            EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest, long userId, long eventId) {
-        // инициализация
-        findUserById(userId);
-        Event event = findEventById(eventId);
-        List<ParticipationRequest> requestListOld = requestRepository.findAllByIdIn(
-                eventRequestStatusUpdateRequest.getRequestIds());
-
-//        аутентификация
-//        0. отношение id заявок к id событию
-        boolean isAccording = requestListOld.stream().allMatch(request -> request.getEvent().getId() == eventId);
-        if (!isAccording) {
-            throw new RequestException(
-                    String.format("айди заявок должны относиться к событие id=%d", eventId));
-        }
-
-//        1. если для события лимит заявок равен 0 или отключена пре-модерация заявок, то подтверждение заявок не требуется
-
-        if (notNeedConfirm(event)) {
-            return RequestMapper.toEventRequestStatusUpdateResult(requestListOld, new ArrayList<>());
-        }
-
-//        2. нельзя подтвердить заявку, если уже достигнут лимит по заявкам на данное событие
-        checkLimit(event);
-
-//        3. статус можно изменить только у заявок, находящихся в состоянии ожидания
-        boolean isPending = requestListOld.stream().allMatch(request -> request.getStatus() == RequestStatus.PENDING);
-        if (!isPending) {
-            throw new RequestException("статус можно изменить только у заявок, находящихся в состоянии ожидания");
-        }
-
-//        4. если при подтверждении данной заявки, лимит заявок для события исчерпан,
-//        то все неподтверждённые заявки необходимо отклонить
-
-        RequestStatus requestStatusUpdate = eventRequestStatusUpdateRequest.getStatus();
-        List<ParticipationRequest> confirmedRequests = new ArrayList<>();
-        List<ParticipationRequest> rejectedRequests = new ArrayList<>();
-        int confirmedRequestsNumber = countConfirmedRequestByEventId(eventId);
-        int currLimit = event.getParticipantLimit() - confirmedRequestsNumber;
-
-        if (currLimit == 0) {
-            requestListOld.forEach(request -> request.setStatus(RequestStatus.CANCELED));
-            rejectedRequests = requestListOld;
-        } else {
-            for (int i = 0; i < requestListOld.size(); i++) {
-                if (currLimit == 0) {
-                    requestListOld.get(i).setStatus(RequestStatus.CANCELED);
-                    rejectedRequests.add(requestListOld.get(i));
-                }
-                ParticipationRequest request = requestListOld.get(i);;
-                request.setStatus(requestStatusUpdate);
-                confirmedRequests.add(request);
-                currLimit = currLimit - 1;
-            }
-        }
-        List<ParticipationRequest> savedConfirmedRequests =  requestRepository.saveAll(confirmedRequests);
-        List<ParticipationRequest> savedRejectedRequests = requestRepository.saveAll(rejectedRequests);
-        return RequestMapper.toEventRequestStatusUpdateResult(savedConfirmedRequests, savedRejectedRequests);
-    }
-
-    @Override
-    public List<ParticipationRequestDto> getUserEventRequests(long userId, long eventId) {
-        findUserById(userId);
-        Event event = findEventById(eventId);
-        if (event.getInitiator().getId() != userId) {
-            throw new RequestException(String.format(
-                    "пользователь id=%d не может просматривать заявки к чужому событию id=%d", userId, eventId
-            ));
-        }
-        List<ParticipationRequest> participationRequestList = requestRepository.findAllByEvent(eventId);
-        return RequestMapper.toRequestDtoList(participationRequestList);
     }
 
     private Event findEventById(long eventId) {
@@ -187,18 +111,6 @@ public class RequestServiceImpl implements RequestService {
         if (eventRequests >= limit) {
             throw new RequestException(String.format("у события id=%d достигнут лимит запросов на участие", eventId));
         }
-    }
-
-    private boolean notNeedConfirm(Event event) {
-        int limit = event.getParticipantLimit();
-        if (limit == 0) {
-            return true;
-        }
-
-        if (!event.getRequestModeration()) {
-            return true;
-        }
-        return false;
     }
 
     private int countConfirmedRequestByEventId(long eventId) {

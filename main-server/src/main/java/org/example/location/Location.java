@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "location")
+@Table(name = "locations")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

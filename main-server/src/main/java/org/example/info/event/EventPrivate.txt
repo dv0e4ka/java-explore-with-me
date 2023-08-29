@@ -1,0 +1,231 @@
+1. addEvent
+    POST
+   http://localhost:8080/users/{userId}/events
+   дата и время на которые намечено событие не может быть раньше, чем через два часа от текущего момента
+
+   requestBody: NewEventDto
+   {
+     "annotation": "Сплав на байдарках похож на полет.",
+     "category": 2,
+     "description": "Сплав на байдарках похож на полет. На спокойной воде — это парение. На бурной, порожистой — выполнение фигур высшего пилотажа. И то, и другое дарят чувство обновления, феерические эмоции, яркие впечатления.",
+     "eventDate": "2024-12-31 15:10:05",
+     "location": {
+       "lat": 55.754167,
+       "lon": 37.62
+     },
+     "paid": true,
+     "participantLimit": 10,
+     "requestModeration": false,
+     "title": "Сплав на байдарках"
+   }
+
+   201: EventFullDto
+   
+   400
+      "status": "BAD_REQUEST",
+      "reason": "Incorrectly made request.",
+      "message": "Field: category. Error: must not be blank. Value: null",
+   409
+
+
+2. Получение событий, добавленных текущим пользователем
+    GET
+    getEvents
+    http://localhost:8080/users/{userId}/events?from&size
+    http://localhost:8080/users/1/events?from=0&size=10
+
+    200: List<EventShortDto>
+    ResponseBody:
+    [
+      [
+        {
+          "annotation": "Эксклюзивность нашего шоу гарантирует привлечение максимальной зрительской аудитории",
+          "category": {
+            "id": 1,
+            "name": "Концерты"
+          },
+          "confirmedRequests": 5,
+          "eventDate": "2024-03-10 14:30:00",
+          "id": 1,
+          "initiator": {
+            "id": 3,
+            "name": "Фёдоров Матвей"
+          },
+          "paid": true,
+          "title": "Знаменитое шоу 'Летающая кукуруза'",
+          "views": 999
+        },
+        {
+          "annotation": "За почти три десятилетия группа 'Java Core' закрепились на сцене как группа, объединяющая поколения.",
+          "category": {
+            "id": 1,
+            "name": "Концерты"
+          },
+          "confirmedRequests": 555,
+          "eventDate": "2025-09-13 21:00:00",
+          "id": 1,
+          "initiator": {
+            "id": 3,
+            "name": "Паша Петров"
+          },
+          "paid": true,
+          "title": "Концерт рок-группы 'Java Core'",
+          "views": 991
+        }
+      ]
+    ]
+
+3. Получение полной информации о событии добавленным текущим пользователем
+
+    изменить можно только отмененные события или события в состоянии ожидания модерации (Ожидается код ошибки 409)
+    дата и время на которые намечено событие не может быть раньше, чем через два часа от текущего момента (Ожидается код ошибки 409)
+
+    GET
+    http://localhost:8080/users/1/events/1
+
+    200: EventFullDto
+    ResponseBody:
+    {
+      "annotation": "Эксклюзивность нашего шоу гарантирует привлечение максимальной зрительской аудитории",
+      "category": {
+        "id": 1,
+        "name": "Концерты"
+      },
+      "confirmedRequests": 5,
+      "createdOn": "2022-09-06 11:00:23",
+      "description": "Что получится, если соединить кукурузу и полёт? Создатели \"Шоу летающей кукурузы\" испытали эту идею на практике и воплотили в жизнь инновационный проект, предлагающий свежий взгляд на развлечения...",
+      "eventDate": "2024-12-31 15:10:05",
+      "id": 1,
+      "initiator": {
+        "id": 3,
+        "name": "Фёдоров Матвей"
+      },
+      "location": {
+        "lat": 55.754167,
+        "lon": 37.62
+      },
+      "paid": true,
+      "participantLimit": 10,
+      "publishedOn": "2022-09-06 15:10:05",
+      "requestModeration": true,
+      "state": "PUBLISHED",
+      "title": "Знаменитое шоу 'Летающая кукуруза'",
+      "views": 999
+    }
+    400
+    404
+
+4. PATCH
+    http://localhost:8080/users/1/events/1
+
+    RequestBody: UpdateEventUserRequest
+    {
+      "annotation": "Сап прогулки по рекам и каналам – это возможность увидеть Практикбург с другого ракурса",
+      "category": 3,
+      "description": "От английского SUP - Stand Up Paddle — \"стоя на доске с веслом\", гавайская разновидность сёрфинга, в котором серфер, стоя на доске, катается на волнах и при этом гребет веслом, а не руками, как в классическом серфинге.",
+      "eventDate": "2023-10-11 23:10:05",
+      "location": {
+        "lat": 55.754167,
+        "lon": 37.62
+      },
+      "paid": true,
+      "participantLimit": 7,
+      "requestModeration": false,
+      "stateAction": "CANCEL_REVIEW",
+      "title": "Сап прогулки по рекам и каналам"
+    }
+
+    200: EventFullDto
+    ResponsetBody:
+    {
+      "annotation": "Эксклюзивность нашего шоу гарантирует привлечение максимальной зрительской аудитории",
+      "category": {
+        "id": 1,
+        "name": "Концерты"
+      },
+      "confirmedRequests": 5,
+      "createdOn": "2022-09-06 11:00:23",
+      "description": "Что получится, если соединить кукурузу и полёт? Создатели \"Шоу летающей кукурузы\" испытали эту идею на практике и воплотили в жизнь инновационный проект, предлагающий свежий взгляд на развлечения...",
+      "eventDate": "2024-12-31 15:10:05",
+      "id": 1,
+      "initiator": {
+        "id": 3,
+        "name": "Фёдоров Матвей"
+      },
+      "location": {
+        "lat": 55.754167,
+        "lon": 37.62
+      },
+      "paid": true,
+      "participantLimit": 10,
+      "publishedOn": "2022-09-06 15:10:05",
+      "requestModeration": true,
+      "state": "PUBLISHED",
+      "title": "Знаменитое шоу 'Летающая кукуруза'",
+      "views": 999
+    }
+
+    400
+    404
+    409
+
+///////////////////////////////////////////////////////////////////////////
+
+REQUEST
+
+1. GET
+    http://localhost:8080/users/1/events/1/requests
+
+    200
+    ResponseBody: ParticipationRequestDto
+    [
+      {
+        "created": "2022-09-06T21:10:05.432",
+        "event": 1,
+        "id": 3,
+        "requester": 2,
+        "status": "PENDING"
+      }
+    ]
+    400
+
+2. PATCH
+    если для события лимит заявок равен 0 или отключена пре-модерация заявок, то подтверждение заявок не требуется
+    нельзя подтвердить заявку, если уже достигнут лимит по заявкам на данное событие (Ожидается код ошибки 409)
+    статус можно изменить только у заявок, находящихся в состоянии ожидания (Ожидается код ошибки 409)
+    если при подтверждении данной заявки, лимит заявок для события исчерпан, то все неподтверждённые заявки необходимо отклонить
+
+    http://localhost:8080/users/1/events/1/requests
+
+    RequestBody: EventRequestStatusUpdateRequest
+    {
+      "requestIds": [
+        1,
+        2,
+        3
+      ],
+      "status": "CONFIRMED"
+    }
+
+    200:
+    ResponseBody: EventRequestStatusUpdateResult
+    {
+      "confirmedRequests": [
+        {
+          "created": "2022-09-06T21:10:05.432",
+          "event": 1,
+          "id": 3,
+          "requester": 2,
+          "status": "PENDING"
+        }
+      ],
+      "rejectedRequests": [
+        {
+          "created": "2022-09-06T21:10:05.432",
+          "event": 1,
+          "id": 3,
+          "requester": 2,
+          "status": "PENDING"
+        }
+      ]
+    }

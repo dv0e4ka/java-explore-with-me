@@ -3,7 +3,7 @@ package org.example.event.controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.event.dto.EventFullDto;
-import org.example.event.service.EventService;
+import org.example.event.service.AdminEventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class AdminEventController {
-    private final EventService eventService;
+    private final AdminEventService eventService;
 
 
     @GetMapping

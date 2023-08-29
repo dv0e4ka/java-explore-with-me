@@ -3,7 +3,7 @@ package org.example.categoriy.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.categoriy.dto.CategoryDto;
-import org.example.categoriy.service.CategoryService;
+import org.example.categoriy.service.PublicCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,20 +18,20 @@ import java.util.List;
 @Validated
 @Slf4j
 public class PublicCategoryController {
-    private final CategoryService categoryService;
+    private final PublicCategoryService categoryService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> findAll(@PositiveOrZero @RequestParam (defaultValue = "0") int from,
+    public List<CategoryDto> getCategories(@PositiveOrZero @RequestParam (defaultValue = "0") int from,
                                      @Positive @RequestParam (defaultValue = "10") int size) {
         log.info("получен запрос на получение категорий");
-        return categoryService.findAll(from, size);
+        return categoryService.getCategories(from, size);
     }
 
     @GetMapping("/{catId}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto findById(@PathVariable long catId) {
+    public CategoryDto getCategory(@PathVariable long catId) {
         log.info("получен запрос на получение категории id={}", catId);
-        return categoryService.findById(catId);
+        return categoryService.getCategory(catId);
     }
 }

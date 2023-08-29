@@ -2,8 +2,9 @@ package org.example.compilation.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.categoriy.service.PublicCategoryService;
 import org.example.compilation.dto.CompilationDto;
-import org.example.compilation.service.CompilationService;
+import org.example.compilation.service.PublicCompilationService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PublicCompilationController {
-    private final CompilationService compilationService;
+    private final PublicCompilationService compilationService;
 
     @GetMapping
     public List<CompilationDto> findAll(@RequestParam (required = false) Boolean pinned,

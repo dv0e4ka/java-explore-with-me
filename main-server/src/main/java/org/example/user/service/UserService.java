@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserDto> findAll(List<Long> ids, int size, int from);
+    List<UserDto> getUsers(List<Long> ids, int size, int from);
 
-    UserDto save(UserDto userDto);
+    UserDto registerUser(UserDto userDto);
 
     void delete(long userId);
 }

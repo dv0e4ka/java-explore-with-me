@@ -5,6 +5,7 @@ import org.example.event.model.Event;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "compilations")
@@ -18,8 +19,9 @@ public class Compilation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany(mappedBy = "compilation")
-    private List<Event> events;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "events", joinColumns = "id")
+//    private Set<Event> events;
 
     @Column(name = "pinned")
     private Boolean pinned;

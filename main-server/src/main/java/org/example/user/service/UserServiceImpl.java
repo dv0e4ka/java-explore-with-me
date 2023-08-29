@@ -21,14 +21,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto save(UserDto userDto) {
+    public UserDto registerUser(UserDto userDto) {
         User user = UserMapper.toUser(userDto);
         User userSaved = userRepository.save(user);
         return UserMapper.toUserDto(userSaved);
     }
 
     @Override
-    public List<UserDto> findAll(List<Long> ids, int from, int size) {
+    public List<UserDto> getUsers(List<Long> ids, int from, int size) {
         List<User> users;
         if (ids != null) {
             users = userRepository.findAllByIdIn(ids);

@@ -9,8 +9,6 @@ import org.example.compilation.util.CompilationMapper;
 import org.example.event.dto.EventShortDto;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,35 +17,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// TODO: у ивентов тоже должы удаляться подборки или я что-то не так понял
-
 @Service
 @RequiredArgsConstructor
-public class CompilationServiceImpl implements CompilationService {
+public class AdminCompilationServiceImpl implements AdminCompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
-
-    @Override
-    public List<CompilationDto> findAll(Boolean pinned, int from, int size) {
-        PageRequest page = PageRequest.of(from, size);
-        Page<Compilation> compilationPage;
-        if (pinned != null) {
-            compilationPage = compilationRepository.findAllByPinned(pinned, page);
-        } else {
-            compilationPage = compilationRepository.findAll(page);
-        }
-
-        List<Compilation> compilationList = compilationPage.getContent();
-        return CompilationMapper.toCompilationDtoList(compilationList);
-    }
-
-    // TODO: разобраться с полем ивенты к компиляции
-    @Override
-    public CompilationDto findById(long compId) {
-        Compilation compilation = compilationRepository.findById(compId).orElseThrow(
-                () -> new EntityNotFoundException("подборка событий по id=" + compId + " не найдено"));
-        return CompilationMapper.toCompilationDto(compilation);
-    }
 
     @Transactional
     @Override
@@ -88,19 +62,12 @@ public class CompilationServiceImpl implements CompilationService {
                 )
         );
 
-        List<Event> eventsFound = compilationFound.getEvents();
-        List<Event> eventToPatch;
+//        List<Event> eventsFound = compilationFound.getEvents();
+//        List<Event> eventToPatch;
 
 //        Set<Long>
-
-
-
-
 //        Compilation patchedCompilation = CompilationMapper.toCompilation(compilationDto, eventsIds);
+        //TODO: не доделал
         return null;
-    }
-
-    private List<Event> findEventsByIds(Set<Long> eventsIds) {
-        return eventRepository.findByIdIn(eventsIds);
     }
 }

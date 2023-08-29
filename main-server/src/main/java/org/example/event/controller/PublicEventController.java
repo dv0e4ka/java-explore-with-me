@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.enums.EventSort;
 import org.example.event.dto.EventShortDto;
-import org.example.event.service.EventServiceImpl;
+import org.example.event.service.PublicEventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ import java.util.List;
 @Validated
 @Slf4j
 public class PublicEventController {
-    private final EventServiceImpl eventService;
+    private final PublicEventService eventService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

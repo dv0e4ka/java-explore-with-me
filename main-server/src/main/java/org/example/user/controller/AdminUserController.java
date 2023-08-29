@@ -26,16 +26,16 @@ public class AdminUserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto save(@Valid @RequestBody UserDto userDto) {
         log.info("получен запрос на добавление нового пользователя: {}", userDto.getName());
-        return userService.save(userDto);
+        return userService.registerUser(userDto);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> findAll(@RequestParam (required = false) List<Long> ids,
+    public List<UserDto> getUsers(@RequestParam (required = false) List<Long> ids,
                                  @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                  @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("получен запрос на получение информации о пользователях");
-        return userService.findAll(ids, from, size);
+        return userService.getUsers(ids, from, size);
     }
 
     @DeleteMapping("/{userId}")

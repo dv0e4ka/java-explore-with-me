@@ -16,15 +16,15 @@ public class PrivateRequestController {
     private final RequestService requestService;
 
     @PostMapping("/{userId}/requests")
-    public ParticipationRequestDto save(@PathVariable long userId, @RequestParam long eventId) {
+    public ParticipationRequestDto addParticipationRequest(@PathVariable long userId, @RequestParam long eventId) {
         log.info("получен запрос на добавления заявки пользователя id={} на участие в событии", userId);
-        return requestService.saveUserRequest(userId, eventId);
+        return requestService.addParticipationRequest(userId, eventId);
     }
 
     @PatchMapping("/{userId}/requests/{requestId}/cancel")
-    public ParticipationRequestDto patch(@PathVariable long userId, @PathVariable long requestId) {
+    public ParticipationRequestDto cancelRequest(@PathVariable long userId, @PathVariable long requestId) {
         log.info("отмена пользователя id={} на участии в событии id={}", userId, requestId);
-        return requestService.patch(userId, requestId);
+        return requestService.cancelRequest(userId, requestId);
 
     }
 

@@ -25,9 +25,9 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "requests")
-    private List<ParticipationRequest> requests;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "requests")
+//    private List<ParticipationRequest> requests;
 
     @Column(name = "annotation")
     private String annotation;
@@ -71,9 +71,9 @@ public class Event {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "compilation")
-    @JsonIgnore
-    private Compilation compilation;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "compilation")
+//    @JsonIgnore
+//    private List<Compilation> compilation;
 
 }
