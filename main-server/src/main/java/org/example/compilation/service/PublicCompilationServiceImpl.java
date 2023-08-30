@@ -5,11 +5,11 @@ import org.example.compilation.dto.CompilationDto;
 import org.example.compilation.model.Compilation;
 import org.example.compilation.repository.CompilationRepository;
 import org.example.compilation.util.CompilationMapper;
+import org.example.exception.model.EntityNoFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -35,7 +35,7 @@ public class PublicCompilationServiceImpl implements PublicCompilationService {
     @Override
     public CompilationDto findById(long compId) {
         Compilation compilation = compilationRepository.findById(compId).orElseThrow(
-                () -> new EntityNotFoundException("подборка событий по id=" + compId + " не найдено"));
+                () -> new EntityNoFoundException("подборка событий по id=" + compId + " не найдено"));
         return CompilationMapper.toCompilationDto(compilation);
     }
 }

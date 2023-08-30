@@ -39,6 +39,7 @@ public class CompilationMapper {
                         .id(compilation.getId())
                         .pinned(compilation.getPinned())
                         .events(EventMapper.toEventShortDtoList(compilation.getEvents()))
+                        .title(compilation.getTitle())
                         .build())
                 .collect(Collectors.toList());
     }
