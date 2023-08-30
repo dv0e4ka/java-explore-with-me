@@ -1,13 +1,10 @@
-package org.example.event.util;
+package org.example.event.mapper;
 
 import lombok.experimental.UtilityClass;
 import org.example.categoriy.model.Category;
 import org.example.categoriy.util.CategoryMapper;
 import org.example.enums.State;
-import org.example.event.dto.EventFullDto;
-import org.example.event.dto.EventShortDto;
-import org.example.event.dto.NewEventDto;
-import org.example.event.dto.UpdateEventUserRequest;
+import org.example.event.dto.*;
 import org.example.event.model.Event;
 import org.example.location.Location;
 import org.example.user.model.User;
@@ -32,6 +29,8 @@ public class EventMapper {
         return Event.builder()
                 .build();
     }
+
+
 
     public static Event toEvent(NewEventDto newEventDto, User requester, Location location, Category category) {
         return Event.builder()
@@ -84,6 +83,7 @@ public class EventMapper {
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
                 .paid(event.getPaid())
                 .title(event.getTitle())
+                .confirmedRequests(event.getConfirmedRequests())
                 .build();
     }
 
@@ -104,6 +104,10 @@ public class EventMapper {
                 .location(event.getLocation())
                 .requestModeration(event.getRequestModeration())
                 .build();
+    }
+
+    public static List<EventFullDto> toEventFullDtoList(List<Event> eventList) {
+        return eventList.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
 //    TODO: включать сюда еще статистику просмотров

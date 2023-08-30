@@ -31,4 +31,6 @@ public class EventShortDto {
 
     @NotNull(message = "поле title не должно быть пустым")
     private String title;
+
+    private int confirmedRequests;
 }

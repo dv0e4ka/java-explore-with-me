@@ -1,24 +1,25 @@
-package org.example.user.model;
+package org.example.customText.model;
 
 import lombok.*;
 
 import javax.persistence.*;
 
-//TODO: доделать сущность
-
+@Table(name = "bar")
+@Entity
 @Getter
 @Setter
-@Table(name = "users")
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class User {
+@NoArgsConstructor
+public class Bar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "name")
     private String name;
 
-    private String email;
+    public Bar(String name) {
+        this.name = name;
+    }
 }

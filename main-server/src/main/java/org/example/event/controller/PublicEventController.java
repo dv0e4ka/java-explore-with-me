@@ -3,6 +3,7 @@ package org.example.event.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.enums.EventSort;
+import org.example.event.dto.EventFullDto;
 import org.example.event.dto.EventShortDto;
 import org.example.event.service.PublicEventService;
 import org.springframework.http.HttpStatus;
@@ -26,14 +27,14 @@ public class PublicEventController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EventShortDto> findEventsByPublicParameters(@RequestParam(required = false) String text,
-                                               @RequestParam(required = false) List<Long> categories,
-                                               @RequestParam(required = false) Boolean paid,
-                                               @RequestParam(required = false)  String rangeStart,
-                                               @RequestParam(required = false)  String rangeEnd,
-                                               @RequestParam(required = false) Boolean onlyAvailable,
-                                               @RequestParam(required = false) @Valid EventSort sort,
-                                               @RequestParam(defaultValue = "0") @PositiveOrZero int from,
-                                               @RequestParam(defaultValue = "10") @Positive int size) {
+                                                            @RequestParam(required = false) List<Long> categories,
+                                                            @RequestParam(required = false) Boolean paid,
+                                                            @RequestParam(required = false) String rangeStart,
+                                                            @RequestParam(required = false) String rangeEnd,
+                                                            @RequestParam(required = false) Boolean onlyAvailable,
+                                                            @RequestParam(required = false) @Valid EventSort sort,
+                                                            @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                            @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("получен публичный запрос на получение информации обо всех событиях");
         return eventService.findEventsByPublicParameters(
                 text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size
@@ -42,7 +43,7 @@ public class PublicEventController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public EventShortDto findByPublicIdShort(@PathVariable long id) {
+    public EventFullDto findByPublicIdShort(@PathVariable long id) {
         log.info("получен публичный запрос на получение информации событии id={}", id);
         return eventService.findByPublicIdShort(id);
     }

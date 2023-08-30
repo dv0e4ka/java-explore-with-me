@@ -1,4 +1,4 @@
-package org.example.request.util;
+package org.example.request.mapper;
 
 import lombok.experimental.UtilityClass;
 import org.example.enums.RequestStatus;

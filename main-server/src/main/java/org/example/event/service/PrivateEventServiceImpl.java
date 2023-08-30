@@ -12,7 +12,7 @@ import org.example.event.dto.NewEventDto;
 import org.example.event.dto.UpdateEventUserRequest;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
-import org.example.event.util.EventMapper;
+import org.example.event.mapper.EventMapper;
 import org.example.exception.model.DateTimeEventException;
 import org.example.exception.model.OwnerShipConflictException;
 import org.example.exception.model.PatchEventStateException;
@@ -24,9 +24,10 @@ import org.example.request.dto.EventRequestStatusUpdateResult;
 import org.example.request.dto.ParticipationRequestDto;
 import org.example.request.model.ParticipationRequest;
 import org.example.request.repository.RequestRepository;
-import org.example.request.util.RequestMapper;
+import org.example.request.mapper.RequestMapper;
 import org.example.user.model.User;
 import org.example.user.repository.UserRepository;
+import org.example.util.DateTimeFormat;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,31 +64,22 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     @Transactional
     @Override
-    public EventFullDto patchUserEvent(UpdateEventUserRequest updateEventDto, long userId, long eventId) {
-        User initiator = findUserById(userId);
-        long initiatorId = initiator.getId();
-        Event foundEvent = findEventById(eventId);
+    public EventFullDto patchUserEvent(UpdateEventUserRequest updateEvent, long userId, long eventId) {
+        User user = findUserById(userId);
+        Event eventFound = findEventById(eventId);
 
-        if (initiatorId != userId) {
+        if (eventFound.getInitiator().getId() != userId) {
             throw new OwnerShipConflictException(
                     String.format("пользователь id=%d не может патчить чужое событие id=%d", userId, eventId));
         }
 
-        if (foundEvent.getState().equals(State.PUBLISHED)) {
+        if (eventFound.getState().equals(State.PUBLISHED)) {
             throw new PatchEventStateException("изменить можно только отмененные события " +
                     "или события в состоянии ожидания модерации");
         }
 
-        Event updateEvent = EventMapper.toEvent(updateEventDto);
-        updateEvent.setInitiator(initiator);
-
-        State state = getPrivateState(updateEventDto);
-        updateEvent.setState(state);
-        updateEvent.setInitiator(initiator);
-
-        updateFields(foundEvent, updateEvent);
-
-        Event patchedEvent = eventRepository.save(updateEvent);
+        Event updatedFieldsEvent = updateFieldByUserRequest(eventFound, updateEvent);
+        Event patchedEvent = eventRepository.save(updatedFieldsEvent);
 
         return EventMapper.toEventFullDto(patchedEvent);
     }
@@ -95,8 +87,8 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     @Override
     public List<EventShortDto> getUserEvents(long userId, int from, int size) {
         PageRequest page = PageRequest.of(from, size);
-        findUserById(userId);
-        List<Event> events = eventRepository.findByInitiator(userId, page);
+        User user = findUserById(userId);
+        List<Event> events = eventRepository.findByInitiator(user, page);
         return EventMapper.toEventShortDtoList(events);
     }
 
@@ -178,47 +170,76 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                     "пользователь id=%d не может просматривать заявки к чужому событию id=%d", userId, eventId
             ));
         }
-        List<ParticipationRequest> participationRequestList = requestRepository.findAllByEvent(eventId);
+        List<ParticipationRequest> participationRequestList = requestRepository.findAllByEvent(event);
         return RequestMapper.toRequestDtoList(participationRequestList);
     }
 
-    private void updateFields(Event foundEvent, Event updateEvent) {
-        updateLocation(foundEvent, updateEvent);
-        updateCategory(foundEvent, updateEvent);
-
-        if (updateEvent.getAnnotation() == null) {
-            updateEvent.setAnnotation(foundEvent.getAnnotation());
+    private Event updateFieldByUserRequest(Event event, UpdateEventUserRequest updateRequest) {
+        String annotation = updateRequest.getAnnotation();
+        if (annotation != null) {
+            event.setAnnotation(annotation);
         }
 
-        if (updateEvent.getDescription() == null) {
-            updateEvent.setDescription(foundEvent.getDescription());
-        }
-        if (updateEvent.getEventDate() == null) {
-            updateEvent.setEventDate(foundEvent.getEventDate());;
-        } else {
-            checkDateTime(updateEvent);
+        Long categoryId = updateRequest.getCategory();
+        if (categoryId != null) {
+            Category category = findCategoryById(categoryId);
+            event.setCategory(category);
         }
 
-        if (updateEvent.getPaid() == null) {
-            updateEvent.setPaid(foundEvent.getPaid());
-        }
-        if (updateEvent.getParticipantLimit() == null) {
-            updateEvent.setParticipantLimit(foundEvent.getParticipantLimit());
-        }
-        if (updateEvent.getRequestModeration() == null) {
-            updateEvent.setRequestModeration(foundEvent.getRequestModeration());
-        }
-        if (updateEvent.getState() == null) {
-            updateEvent.setState(foundEvent.getState());
-        }
-        if (updateEvent.getTitle() == null) {
-            updateEvent.setTitle(foundEvent.getTitle());
+        String description = updateRequest.getDescription();
+        if (description != null) {
+            event.setDescription(description);
         }
 
-        updateEvent.setId(foundEvent.getId());
-        updateEvent.setCreatedOn(foundEvent.getCreatedOn());
-        updateEvent.setPublishedOn(foundEvent.getPublishedOn());
-//        updateEvent.setCompilation(foundEvent.getCompilation());
+        String eventDateString = updateRequest.getEventDate();
+        if (eventDateString != null) {
+            LocalDateTime eventDate = LocalDateTime.parse(eventDateString, DateTimeFormat.formatter);
+            event.setEventDate(eventDate);
+            checkDateTime(event);
+        }
+
+        Location updateLocation = updateRequest.getLocation();
+        if (updateLocation != null) {
+            float lat = updateLocation.getLat();
+            float lon = updateLocation.getLon();
+
+            Location location = locationRepository.findByLatAndLon(lat, lon)
+                    .stream()
+                    .findAny()
+                    .orElse(locationRepository.save(
+                                    new Location(lat, lon)
+                            )
+                    );
+            event.setLocation(location);
+        }
+
+        Boolean paid = updateRequest.getPaid();
+        if (paid != null) {
+            event.setPaid(paid);
+        }
+
+        Integer participantLimit = updateRequest.getParticipantLimit();
+        if (participantLimit != null) {
+            event.setParticipantLimit(participantLimit);
+        }
+
+        Boolean requestModeration = updateRequest.getRequestModeration();
+        if (requestModeration != null) {
+            event.setRequestModeration(requestModeration);
+        }
+
+        PrivateStateAction privateState = updateRequest.getStateAction();
+        if (privateState != null) {
+            State state = getPrivateState(updateRequest);
+            event.setState(state);
+        }
+
+        String title = updateRequest.getTitle();
+        if (title != null) {
+            event.setTitle(title);
+        }
+
+        return event;
     }
 
     private void checkLimit(Event event) {
@@ -246,21 +267,6 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return false;
     }
 
-    private void updateLocation(Event foundEvent, Event updateEvent) {
-        Location updateEventLocation = updateEvent.getLocation();
-        if (updateEventLocation == null) {
-            updateEvent.setLocation(foundEvent.getLocation());
-        } else {
-            Location foundLocation = locationRepository.findByLatAndLon(updateEventLocation.getLat(),
-                    updateEventLocation.getLon());
-            if (foundLocation == null) {
-                Location newLocation = locationRepository.save(updateEventLocation);
-                updateEvent.setLocation(newLocation);
-            } else {
-                updateEvent.setLocation(foundLocation);
-            }
-        }
-    }
 
     private void updateCategory(Event foundEvent, Event updateEvent) {
         if (updateEvent.getCategory() == null) {

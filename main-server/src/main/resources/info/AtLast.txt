@@ -1,0 +1,97 @@
+Что я сделал:
+1. User
+    Admin
+        POST
+        GET
+        DELETE
+
+2. Category
+    Admin
+        POST
+        DELETE
+        PATCH
+
+    Public
+        GET
+        GET by id
+
+3. Event
+    Private
+        GET все shortDto тек пользователя
+        POST
+        GET fullDto by userId
+        PATCH
+            REQUEST
+                -get
+                -post
+
+    Admin
+        GET
+        PATCH
+
+    Public
+        GET by param
+        GET by Id
+
+4. Request
+    Private
+        ?get
+        ?post
+        ?patch
+
+5. Compilation
+
+    Public
+        -get
+        -get by id
+    Admin
+        -post
+        -delete
+        -patch
+
+
+
+
+
+
+
+
+Не готово:
+
+Category
+    AdminCategoryServiceImpl
+        TODO: проверить удаление при наличии связаных событий(нужен каскад делейт)
+        delete(long catId) {
+
+
+
+RequestService
+    cancelRequest()
+    // TODO: проверить. как поведт себя 'request.getEvent();', ведь FETCH.LAZY
+
+
+
+
+
+
+
+AdminCompilationServiceImpl
+    TODO доделать
+    patch()
+
+PublicCompilationServiceImpl
+    TODO: разобраться с полем ивенты к компиляции
+    findById()
+
+
+AdminEventServiceImpl
+    TODO: пустой сервис
+
+    findEventsFull()
+    findByIdFull()
+
+PublicEventServiceImpl
+    TODO
+    ужас
+    findEventsByPublicParameters()
+    findByPublicIdShort()

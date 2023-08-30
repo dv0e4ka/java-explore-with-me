@@ -1,8 +1,8 @@
 package org.example.event.repository;
 
-import org.example.enums.RequestStatus;
 import org.example.enums.State;
 import org.example.event.model.Event;
+import org.example.user.model.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,62 +15,46 @@ import java.util.Set;
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByIdIn(Set<Long> eventIds);
 
-    List<Event> findByInitiator(long initiatorId, PageRequest page);
+    List<Event> findByInitiator(User initiator, PageRequest page);
 
-//    @Query("select distinct e " +
-//            "from Event e " +
-//            "join fetch e.initiator as u " +
-//            "join fetch e.category as c " +
-//            "left join fetch e.requests pr " +
-//            "where (:text is null " +
-//            "or (lower(e.annotation)) like concat('%', :text, '%') " +
-//            "and (lower(e.description)) like concat('%', :text, '%')) " +
-//            "and (:categories is null or e.category in :categories) " +
-//            "and e.eventDate >= :rangeStart " +
-//            "and e.eventDate <= :rangeEnd " +
-//            "and e.paid = :paid " +
-//            "and e.state = :state " +
-//            "and (select count(pr) from pr " +
-//                "where pr.event = e and pr.status = :status) <= e.participantLimit " +
-//            "or e.participantLimit = 0")
-//    List<Event> findAvailableEventsByPublicParameters(@Param("text") String text,
-//                                                             @Param("categories") List<Long> categories,
-//                                                             @Param("paid") boolean paid,
-//                                                             @Param("rangeStart") LocalDateTime rangeStart,
-//                                                             @Param("rangeEnd") LocalDateTime rangeEnd,
-//                                                             @Param("state") State state,
-//                                                             @Param("status") RequestStatus status,
-//                                                             @Param("page") PageRequest page);
 
-//    @Query("select distinct e " +
-//            "from Event e " +
-//            "join fetch e.initiator as u " +
-//            "join fetch e.category as c " +
-//            "left join fetch e.requests pr " +
-//            "where (:text is null " +
-//            "or (lower(e.annotation)) like concat('%', :text, '%') " +
-//            "and (lower(e.description)) like concat('%', :text, '%')) " +
-//            "and (:categories is null or e.category in :categories) " +
-//            "and e.eventDate >= :rangeStart " +
-//            "and e.eventDate <= :rangeEnd " +
-//            "and e.paid = :paid " +
-//            "and e.state = :state " +
-//            "and (select count(pr) from pr " +
-//            "where pr.event = e and pr.status = :status)")
-//     List<Event> findAllEventsByPublicParameters(@Param("text") String text,
-//                                                 @Param("categories") List<Long> categories,
-//                                                 @Param("paid") boolean paid,
-//                                                 @Param("rangeStart") LocalDateTime rangeStart,
-//                                                 @Param("rangeEnd") LocalDateTime rangeEnd,
-//                                                 @Param("state") State state,
-//                                                 @Param("status") RequestStatus status,
-//                                                 @Param("page") PageRequest page);
-//
-//    @Query("select distinct  e " +
-//            "from Event e " +
-//            "left join fetch e.requests pr " +
-//            "where e.state = :state " +
-//            "and e.id = :eventId")
-//    Event findEventWithJoinFetchByIdAndStatus(@Param("eventId") long eventId,
-//                                              @Param("state") State state);
+//    AdminEventRequest
+    @Query("select e " +
+            "from Event e " +
+            "join fetch e.initiator i " +
+            "join fetch e.category c " +
+            "join fetch e.location l " +
+            "where e.eventDate between :start and :end " +
+            "and (:userIds is null or i.id in :userIds) " +
+            "and (:categoryIds is null or c.id in :categoryIds) " +
+            "and (:states is null or e.state in :states) ")
+    List<Event> findAllByParam(@Param("userIds") List<Long> userIds,
+                               @Param("states") List<String> states,
+                               @Param("categoryIds") List<Long> categoryIds,
+                               @Param("start") LocalDateTime start,
+                               @Param("end") LocalDateTime end,
+                               PageRequest page);
+
+
+    @Query("select e from Event e " +
+            "join fetch e.initiator as u " +
+            "join fetch e.category as c " +
+            "where e.state = 'PUBLISHED' " +
+            "and (:text is null or (lower(e.annotation)) like lower(concat('%', :text, '%')) " +
+            "or (lower(e.description)) like lower(concat('%', :text, '%'))) " +
+            "and (:categories is null or e.category in :categories) " +
+            "and (:paid is null or e.paid = :paid) " +
+            "and e.eventDate >= :rangeStart " +
+            "and e.eventDate <= :rangeEnd " +
+            "and (e.confirmedRequests < e.participantLimit or :onlyAvailable is null)"
+    )
+    List<Event> findAvailableEventsByPublicParameters(@Param("text") String text,
+                                                      @Param("categories") List<Long> categories,
+                                                      @Param("rangeStart") LocalDateTime rangeStart,
+                                                      @Param("rangeEnd") LocalDateTime rangeEnd,
+                                                      @Param("paid") Boolean paid,
+                                                      @Param("onlyAvailable") Boolean onlyAvailable,
+                                                      @Param("page") PageRequest page);
+
+    Event findByIdAndState(long id, State state);
 }

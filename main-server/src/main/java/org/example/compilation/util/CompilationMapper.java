@@ -5,7 +5,6 @@ import org.example.compilation.dto.CompilationDto;
 import org.example.compilation.dto.NewCompilationDto;
 import org.example.compilation.model.Compilation;
 import org.example.event.model.Event;
-import org.example.event.util.EventMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;

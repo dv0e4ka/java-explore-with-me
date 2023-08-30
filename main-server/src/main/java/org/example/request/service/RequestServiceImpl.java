@@ -2,22 +2,20 @@ package org.example.request.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.enums.RequestStatus;
+import org.example.enums.State;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
 import org.example.exception.model.RequestException;
-import org.example.request.dto.EventRequestStatusUpdateRequest;
-import org.example.request.dto.EventRequestStatusUpdateResult;
 import org.example.request.dto.ParticipationRequestDto;
 import org.example.request.model.ParticipationRequest;
 import org.example.request.repository.RequestRepository;
-import org.example.request.util.RequestMapper;
+import org.example.request.mapper.RequestMapper;
 import org.example.user.model.User;
 import org.example.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,20 +32,21 @@ public class RequestServiceImpl implements RequestService {
         User user = findUserById(userId);
         Event event = findEventById(eventId);
 
-        if (requestRepository.findByRequesterAndEvent(userId, eventId) != null) {
-            throw new RequestException(String.format("пользователь id=%d " +
-                    "не может повторно подать заявку на событие id=%d", userId, eventId));
-        }
-
         if (event.getInitiator().getId() == userId) {
             throw new RequestException(String.format("пользователь id=%d " +
                     "не может подать заявку на собственное событие id=%d", userId, eventId));
         }
 
-        checkLimit(event);
-        int confirmedRequestsNumber = countConfirmedRequestByEventId(eventId);
+        if (!event.getState().equals(State.PUBLISHED)) {
+            throw new RequestException(String.format("нельзя участвовать в неопубликованном событии id=%d", eventId));
+        }
 
-        if (confirmedRequestsNumber == event.getParticipantLimit()) {
+        if (requestRepository.findByRequesterAndEvent(user, event) != null) {
+            throw new RequestException(String.format("пользователь id=%d " +
+                    "не может повторно подать заявку на событие id=%d", userId, eventId));
+        }
+
+        if (event.getConfirmedRequests() == event.getParticipantLimit()) {
             throw new RequestException(String.format("у события id=%d достигнут лимит запросов на участие", eventId));
         }
 
@@ -66,21 +65,29 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     @Override
     public ParticipationRequestDto cancelRequest(long userId, long requestId) {
-        findUserById(userId);
+        User user = findUserById(userId);
         ParticipationRequest request = requestRepository.findById(requestId).orElseThrow(
                 () -> new EntityNotFoundException(String.format(
                         "запрос на участи id=%d не найдено", requestId
                 ))
         );
+        if (request.getStatus().equals(RequestStatus.CONFIRMED)) {
+            // TODO: а как поведт себя, ведь FETCH.LAZY
+            //  но chatGpt разрешает, при использовании транзакции
+            Event event = request.getEvent();
+            event.setConfirmedRequests(event.getConfirmedRequests() - 1);
+            eventRepository.save(event);
+        }
         request.setStatus(RequestStatus.CANCELED);
-        ParticipationRequest requestPatched = requestRepository.save(request);
-        return RequestMapper.toRequestDto(requestPatched);
+        ParticipationRequest requestCanceled = requestRepository.save(request);
+        // TODO: убедиться что userId, eventId войдут в дто
+        return RequestMapper.toRequestDto(requestCanceled);
     }
 
     @Override
     public List<ParticipationRequestDto> getUserRequests(long userId) {
-        findUserById(userId);
-        List<ParticipationRequest> requests = requestRepository.findAllByRequester(userId);
+        User user = findUserById(userId);
+        List<ParticipationRequest> requests = requestRepository.findAllByRequester(user);
         return RequestMapper.toRequestDtoList(requests);
     }
 
@@ -98,22 +105,5 @@ public class RequestServiceImpl implements RequestService {
                         "пользователь id=%d не найден", userId
                 ))
         );
-    }
-
-    private void checkLimit(Event event) {
-        int limit = event.getParticipantLimit();
-        long eventId = event.getId();
-        if (limit == 0) {
-            return;
-        }
-
-        int eventRequests = requestRepository.countByEventAndStatus(eventId, RequestStatus.CONFIRMED);
-        if (eventRequests >= limit) {
-            throw new RequestException(String.format("у события id=%d достигнут лимит запросов на участие", eventId));
-        }
-    }
-
-    private int countConfirmedRequestByEventId(long eventId) {
-        return requestRepository.countByEventAndStatus(eventId, RequestStatus.CONFIRMED);
     }
 }
