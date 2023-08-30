@@ -8,7 +8,7 @@ import org.example.event.dto.EventShortDto;
 import org.example.event.mapper.EventMapper;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
-import org.example.exception.model.EntityNotFoundException;
+import org.example.exception.model.EntityNoFoundException;
 import org.example.exception.model.InvalidParameterException;
 import org.example.util.DateTimeFormat;
 import org.springframework.data.domain.PageRequest;
@@ -78,7 +78,7 @@ public class PublicEventServiceImpl implements PublicEventService {
     public EventFullDto findByPublicIdShort(long eventId) {
         Event event = eventRepository.findByIdAndState(eventId, State.PUBLISHED);
         if (event == null) {
-            throw new EntityNotFoundException(String.format("событие с id=%d не найдено", eventId));
+            throw new EntityNoFoundException(String.format("событие с id=%d не найдено", eventId));
         } else {
             return EventMapper.toEventFullDto(event);
         }
@@ -86,7 +86,7 @@ public class PublicEventServiceImpl implements PublicEventService {
 
     private Event findEventById(long eventId) {
         return eventRepository.findById(eventId).orElseThrow(
-                () -> new EntityNotFoundException(String.format("событие с id=%d не найдено", eventId))
+                () -> new EntityNoFoundException(String.format("событие с id=%d не найдено", eventId))
         );
     }
 }

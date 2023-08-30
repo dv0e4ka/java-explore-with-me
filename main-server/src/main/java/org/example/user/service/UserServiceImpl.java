@@ -1,7 +1,7 @@
 package org.example.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.exception.model.EntityNotFoundException;
+import org.example.exception.model.EntityNoFoundException;
 import org.example.user.dto.UserDto;
 import org.example.user.model.User;
 import org.example.user.repository.UserRepository;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(long userId) {
         userRepository.findById(userId).orElseThrow(
-                () -> new EntityNotFoundException("пользователь с id=" + userId + " не найден")
+                () -> new EntityNoFoundException("пользователь с id=" + userId + " не найден")
         );
 
         userRepository.deleteById(userId);

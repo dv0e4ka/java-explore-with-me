@@ -32,7 +32,7 @@ public class Event {
     private String annotation;
 
     @Column(name = "participant_limit")
-    private Integer participantLimit;
+    private int participantLimit;
 
     @Column(name = "description")
     private String description;

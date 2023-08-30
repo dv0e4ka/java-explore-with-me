@@ -5,6 +5,7 @@ import org.example.enums.RequestStatus;
 import org.example.enums.State;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
+import org.example.exception.model.EntityNoFoundException;
 import org.example.exception.model.RequestException;
 import org.example.request.dto.ParticipationRequestDto;
 import org.example.request.model.ParticipationRequest;
@@ -15,7 +16,6 @@ import org.example.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 
@@ -54,6 +54,8 @@ public class RequestServiceImpl implements RequestService {
 
         if (event.getParticipantLimit() == 0 || !event.getRequestModeration()) {
             status = RequestStatus.CONFIRMED;
+            event.setConfirmedRequests(event.getConfirmedRequests() + 1);
+            eventRepository.save(event);
         }
 
         ParticipationRequest request = RequestMapper.toRequest(event, user, status);
@@ -67,13 +69,11 @@ public class RequestServiceImpl implements RequestService {
     public ParticipationRequestDto cancelRequest(long userId, long requestId) {
         User user = findUserById(userId);
         ParticipationRequest request = requestRepository.findById(requestId).orElseThrow(
-                () -> new EntityNotFoundException(String.format(
+                () -> new EntityNoFoundException(String.format(
                         "запрос на участи id=%d не найдено", requestId
                 ))
         );
         if (request.getStatus().equals(RequestStatus.CONFIRMED)) {
-            // TODO: а как поведт себя, ведь FETCH.LAZY
-            //  но chatGpt разрешает, при использовании транзакции
             Event event = request.getEvent();
             event.setConfirmedRequests(event.getConfirmedRequests() - 1);
             eventRepository.save(event);
@@ -93,7 +93,7 @@ public class RequestServiceImpl implements RequestService {
 
     private Event findEventById(long eventId) {
         return eventRepository.findById(eventId).orElseThrow(
-                () -> new EntityNotFoundException(String.format(
+                () -> new EntityNoFoundException(String.format(
                         "событие id=%d не найдено", eventId
                 ))
         );
@@ -101,7 +101,7 @@ public class RequestServiceImpl implements RequestService {
 
     private User findUserById(long userId) {
         return userRepository.findById(userId).orElseThrow(
-                () -> new EntityNotFoundException(String.format(
+                () -> new EntityNoFoundException(String.format(
                         "пользователь id=%d не найден", userId
                 ))
         );

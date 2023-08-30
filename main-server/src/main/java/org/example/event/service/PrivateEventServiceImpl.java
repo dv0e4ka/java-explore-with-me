@@ -118,13 +118,15 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         }
 
 //        1. если для события лимит заявок равен 0 или отключена пре-модерация заявок, то подтверждение заявок не требуется
-
+// TODO добавить конферм
         if (notNeedConfirm(event)) {
+            event.setConfirmedRequests(event.getConfirmedRequests() + eventRequestStatusUpdateRequest.getRequestIds().size());
+            eventRepository.save(event);
             return RequestMapper.toEventRequestStatusUpdateResult(requestListOld, new ArrayList<>());
         }
 
 //        2. нельзя подтвердить заявку, если уже достигнут лимит по заявкам на данное событие
-        checkLimit(event);
+         int confirmedRequestNumber = countLimit(event);
 
 //        3. статус можно изменить только у заявок, находящихся в состоянии ожидания
         boolean isPending = requestListOld.stream().allMatch(request -> request.getStatus() == RequestStatus.PENDING);
@@ -138,9 +140,9 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         RequestStatus requestStatusUpdate = eventRequestStatusUpdateRequest.getStatus();
         List<ParticipationRequest> confirmedRequests = new ArrayList<>();
         List<ParticipationRequest> rejectedRequests = new ArrayList<>();
-        int confirmedRequestsNumber = countConfirmedRequestByEventId(eventId);
-        int currLimit = event.getParticipantLimit() - confirmedRequestsNumber;
+        int currLimit = event.getParticipantLimit() - confirmedRequestNumber;
 
+        int additionalConfirmRequests = 0;
         if (currLimit == 0) {
             requestListOld.forEach(request -> request.setStatus(RequestStatus.CANCELED));
             rejectedRequests = requestListOld;
@@ -150,14 +152,19 @@ public class PrivateEventServiceImpl implements PrivateEventService {
                     requestListOld.get(i).setStatus(RequestStatus.CANCELED);
                     rejectedRequests.add(requestListOld.get(i));
                 }
-                ParticipationRequest request = requestListOld.get(i);;
+                ParticipationRequest request = requestListOld.get(i);
                 request.setStatus(requestStatusUpdate);
+                if (requestStatusUpdate.equals(RequestStatus.CONFIRMED)) {
+                    additionalConfirmRequests++;
+                }
                 confirmedRequests.add(request);
                 currLimit = currLimit - 1;
             }
         }
         List<ParticipationRequest> savedConfirmedRequests =  requestRepository.saveAll(confirmedRequests);
         List<ParticipationRequest> savedRejectedRequests = requestRepository.saveAll(rejectedRequests);
+        event.setConfirmedRequests(event.getConfirmedRequests() + additionalConfirmRequests);
+        eventRepository.save(event);
         return RequestMapper.toEventRequestStatusUpdateResult(savedConfirmedRequests, savedRejectedRequests);
     }
 
@@ -242,16 +249,19 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return event;
     }
 
-    private void checkLimit(Event event) {
-        int limit = event.getParticipantLimit();
+    private Integer countLimit(Event event) {
         long eventId = event.getId();
+
+        int limit = event.getParticipantLimit();
         if (limit == 0) {
-            return;
+            return 0;
         }
 
-        int eventRequests = requestRepository.countByEventAndStatus(eventId, RequestStatus.CONFIRMED);
+        int eventRequests = requestRepository.countByEventAndStatus(event, RequestStatus.CONFIRMED);
         if (eventRequests >= limit) {
             throw new RequestException(String.format("у события id=%d достигнут лимит запросов на участие", eventId));
+        } else {
+            return eventRequests;
         }
     }
 
@@ -265,16 +275,6 @@ public class PrivateEventServiceImpl implements PrivateEventService {
             return true;
         }
         return false;
-    }
-
-
-    private void updateCategory(Event foundEvent, Event updateEvent) {
-        if (updateEvent.getCategory() == null) {
-            updateEvent.setCategory(foundEvent.getCategory());
-        } else {
-            Category category = findCategoryById(updateEvent.getCategory().getId());
-            updateEvent.setCategory(category);
-        }
     }
 
     private State getPrivateState(UpdateEventUserRequest updateEventUserRequest) {
@@ -314,9 +314,5 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         return eventRepository.findById(eventId).orElseThrow(
                 () -> new EntityNotFoundException(String.format("событие с id=%d не найдено", eventId))
         );
-    }
-
-    private int countConfirmedRequestByEventId(long eventId) {
-        return requestRepository.countByEventAndStatus(eventId, RequestStatus.CONFIRMED);
     }
 }

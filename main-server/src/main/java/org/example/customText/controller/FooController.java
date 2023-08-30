@@ -6,9 +6,12 @@ import org.example.customText.BarRepository;
 import org.example.customText.FooRepository;
 import org.example.customText.model.Bar;
 import org.example.customText.model.Foo;
+import org.example.enums.RequestStatus;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
-import org.example.exception.model.EntityNotFoundException;
+import org.example.exception.model.EntityNoFoundException;
+import org.example.request.model.ParticipationRequest;
+import org.example.request.repository.RequestRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,19 +28,20 @@ public class FooController {
     private final FooRepository fooRepository;
     private final BarRepository barRepository;
     private final EventRepository eventRepository;
+    private final RequestRepository requestRepository;
 
 
     @PostMapping("/{barId}")
     public Foo add(@PathVariable long barId) {
         log.info("barId = {}", barId);
-        Bar bar = barRepository.findById(barId).orElseThrow(()-> new EntityNotFoundException(" ups"));
+        Bar bar = barRepository.findById(barId).orElseThrow(()-> new EntityNoFoundException(" ups"));
         String name = "foo" + barId;
         return fooRepository.save(new Foo(name, bar));
     }
 
     @GetMapping("/{id}")
     public Foo get(@PathVariable long id) {
-        return fooRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(" ups"));
+        return fooRepository.findById(id).orElseThrow(()-> new EntityNoFoundException(" ups"));
     }
 
     @GetMapping("/getAll")
@@ -97,15 +101,11 @@ public class FooController {
     }
 
 //    @GetMapping("/publish")
-//    public List<Event> getPublish() {
-//        LocalDateTime start = LocalDateTime.now();
-//        LocalDateTime end = LocalDateTime.now().plusYears(10);
-//        return eventRepository.findAvailableEventsByPublicParameters(null,
-//                null,
-//                start,
-//                end,
-//                null,
-//                null);
+//    public List<ParticipationRequest> getPublish() {
+//        return requestRepository.findAllByStatus(RequestStatus.CONFIRMED);
 //    }
+
+
+
 
 }

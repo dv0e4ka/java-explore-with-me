@@ -3,10 +3,8 @@ package org.example.customText.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.customText.BarRepository;
-import org.example.customText.FooRepository;
 import org.example.customText.model.Bar;
-import org.example.customText.model.Foo;
-import org.example.exception.model.EntityNotFoundException;
+import org.example.exception.model.EntityNoFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +25,7 @@ public class BarController {
 
     @GetMapping("/{id}")
     public Bar getBar(@PathVariable long id) {
-        return barRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(" ups"));
+        return barRepository.findById(id).orElseThrow(()-> new EntityNoFoundException(" ups"));
     }
 
     @GetMapping("/getAll")

@@ -5,7 +5,7 @@ import org.example.categoriy.dto.CategoryDto;
 import org.example.categoriy.model.Category;
 import org.example.categoriy.repository.CategoryRepository;
 import org.example.categoriy.util.CategoryMapper;
-import org.example.exception.model.EntityNotFoundException;
+import org.example.exception.model.EntityNoFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class PublicCategoryServiceImpl implements PublicCategoryService {
     public CategoryDto getCategory(long catId) {
         Category category = categoryRepository.findById(catId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(
+                        () -> new EntityNoFoundException(
                                 String.format("категория id=%d не найдена", catId)
                         )
                 );

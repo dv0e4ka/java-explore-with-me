@@ -22,8 +22,8 @@
         GET fullDto by userId
         PATCH
             REQUEST
-                -get
-                -post
+                GET
+                POST
 
     Admin
         GET
@@ -31,13 +31,13 @@
 
     Public
         GET by param
-        GET by Id
+        GET by id
 
 4. Request
     Private
-        ?get
-        ?post
-        ?patch
+        GET
+        POST
+        PATCH
 
 5. Compilation
 

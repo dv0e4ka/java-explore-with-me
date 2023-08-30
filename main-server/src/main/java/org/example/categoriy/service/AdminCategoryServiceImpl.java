@@ -6,7 +6,7 @@ import org.example.categoriy.dto.NewCategoryDto;
 import org.example.categoriy.model.Category;
 import org.example.categoriy.repository.CategoryRepository;
 import org.example.categoriy.util.CategoryMapper;
-import org.example.exception.model.EntityNotFoundException;
+import org.example.exception.model.EntityNoFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +47,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     private Category findCatById(long catId) {
         return categoryRepository.findById(catId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(
+                        () -> new EntityNoFoundException(
                                 String.format("категория id=%d не найдена", catId)
                         )
                 );

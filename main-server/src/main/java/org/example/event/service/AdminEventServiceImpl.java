@@ -11,7 +11,7 @@ import org.example.event.mapper.EventMapper;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
 import org.example.exception.model.DateTimeEventException;
-import org.example.exception.model.EntityNotFoundException;
+import org.example.exception.model.EntityNoFoundException;
 import org.example.exception.model.PatchEventStateException;
 import org.example.location.Location;
 import org.example.location.LocationRepository;
@@ -47,7 +47,7 @@ public class AdminEventServiceImpl implements AdminEventService {
         if (userIds != null) {
             List<User> userList = userRepository.findAllByIdIn(userIds);
             if (userList.size() != userIds.size()) {
-                throw new EntityNotFoundException("введены не добавленные пользователи");
+                throw new EntityNoFoundException("введены не добавленные пользователи");
             }
         }
 
@@ -55,7 +55,7 @@ public class AdminEventServiceImpl implements AdminEventService {
             List<Category> categoryList = categoryRepository.findAllByIdIn(categoryIds);
 
             if (categoryList.size() != categoryIds.size()) {
-                throw new EntityNotFoundException("введены не добавленные категории");
+                throw new EntityNoFoundException("введены не добавленные категории");
             }
         }
 
@@ -89,7 +89,7 @@ public class AdminEventServiceImpl implements AdminEventService {
     @Override
     public EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest updateEvent) {
         Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new EntityNotFoundException(String.format("событие id=%d не найдено", eventId))
+                () -> new EntityNoFoundException(String.format("событие id=%d не найдено", eventId))
         );
 
 
@@ -124,7 +124,7 @@ public class AdminEventServiceImpl implements AdminEventService {
         Long categoryId = updateEvent.getCategory();
         if (categoryId != null) {
             Category category = categoryRepository.findById(categoryId).orElseThrow(
-                    () -> new EntityNotFoundException(String.format("категория id=%d не найдена", categoryId))
+                    () -> new EntityNoFoundException(String.format("категория id=%d не найдена", categoryId))
             );
 
             event.setCategory(category);

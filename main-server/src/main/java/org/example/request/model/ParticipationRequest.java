@@ -31,6 +31,6 @@ public class ParticipationRequest {
     @JoinColumn(name = "requester")
     private User requester;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private RequestStatus status;
 }
