@@ -1,5 +1,6 @@
 package org.example.compilation.dto;
 
+
 import lombok.Builder;
 import lombok.Data;
 import org.example.event.dto.EventShortDto;
@@ -11,13 +12,11 @@ import java.util.List;
 @Builder
 public class CompilationDto {
     private List<EventShortDto> events;
+    private Long id;
 
-    @NotNull(message = "поле id должно быть пустым")
-    private long id;
-
-    @NotNull(message = "поле pinned должно быть пустым")
+    @NotNull(message = "поле pinned не должно быть пустым")
     private Boolean pinned;
 
-    @NotNull(message = "поле title должно быть пустым")
+    @NotNull(message = "поле title не должно быть пустым")
     private String title;
 }

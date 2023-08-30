@@ -5,7 +5,6 @@ import org.example.event.model.Event;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "compilations")
@@ -19,11 +18,13 @@ public class Compilation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "events", joinColumns = "id")
-//    private Set<Event> events;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "compilation_events_relation",
+            joinColumns = { @JoinColumn(name = "compilation_id") },
+            inverseJoinColumns = { @JoinColumn(name = "event_id") })
+    private List<Event> events;
 
-    @Column(name = "pinned")
+    @Column(name = "pinned", columnDefinition = "boolean default false")
     private Boolean pinned;
 
     @Column(name = "title")

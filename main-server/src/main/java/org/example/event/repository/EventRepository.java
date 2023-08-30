@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-    List<Event> findByIdIn(Set<Long> eventIds);
+    List<Event> findByIdIn(List<Long> eventIds);
 
     List<Event> findByInitiator(User initiator, PageRequest page);
 

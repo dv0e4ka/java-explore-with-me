@@ -45,9 +45,20 @@
         -get
         -get by id
     Admin
-        -post
-        -delete
-        -patch
+        POST
+        DELETE
+        PATCH
+
+
+
+
+
+
+
+
+
+
+
 
 
 

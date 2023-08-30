@@ -2,12 +2,13 @@ package org.example.compilation.service;
 
 import org.example.compilation.dto.CompilationDto;
 import org.example.compilation.dto.NewCompilationDto;
+import org.example.compilation.dto.UpdateCompilationRequest;
 
 public interface AdminCompilationService {
 
-    CompilationDto save(NewCompilationDto compilationDto);
+    CompilationDto saveCompilation(NewCompilationDto compilationDto);
 
-    void delete(long compId);
+    void deleteCompilation(long compId);
 
-    CompilationDto patch(long compId, CompilationDto compilationDto);
+    CompilationDto updateCompilation(long compId, UpdateCompilationRequest updateCompilationRequest);
 }
