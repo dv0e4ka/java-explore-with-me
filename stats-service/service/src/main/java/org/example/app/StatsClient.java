@@ -19,7 +19,7 @@ import java.util.Map;
 public class StatsClient extends BaseClient {
 
     @Autowired
-    public StatsClient(@Value("${stats-server.url}") String statsServiceUrl, RestTemplateBuilder builder) {
+    public StatsClient(@Value("http://localhost:9090") String statsServiceUrl, RestTemplateBuilder builder) {
         super(builder.uriTemplateHandler(new DefaultUriBuilderFactory(statsServiceUrl))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                 .build()

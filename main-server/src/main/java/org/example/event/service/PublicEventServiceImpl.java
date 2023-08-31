@@ -1,6 +1,8 @@
 package org.example.event.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.app.StatsClient;
+import org.example.dto.EndpointHitDto;
 import org.example.enums.EventSort;
 import org.example.enums.State;
 import org.example.event.dto.EventFullDto;
@@ -14,7 +16,9 @@ import org.example.util.DateTimeFormat;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +26,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
+    private final StatsClient statsClient;
 
+
+    @Transactional
     @Override
     public List<EventShortDto> findEventsByPublicParameters(String text,
                                                             List<Long> categories,
@@ -31,15 +38,14 @@ public class PublicEventServiceImpl implements PublicEventService {
                                                             String rangeEnd,
                                                             Boolean onlyAvailable,
                                                             EventSort sort,
-                                                            int from, int size) {
+                                                            int from, int size,
+                                                            HttpServletRequest request) {
         PageRequest page = PageRequest.of(from, size);
         if (sort != null) {
-            switch (sort) {
-                case VIEWS:
-                    page.withSort(Sort.by(Sort.Direction.ASC, "views"));
-                    break;
-                default:
-                    page.withSort(Sort.by(Sort.Direction.ASC, "eventDate"));
+            if (sort == EventSort.VIEWS) {
+                page.withSort(Sort.by(Sort.Direction.ASC, "views"));
+            } else {
+                page.withSort(Sort.by(Sort.Direction.ASC, "eventDate"));
             }
         }
 
@@ -66,19 +72,38 @@ public class PublicEventServiceImpl implements PublicEventService {
                 onlyAvailable,
                 page
         );
-
-//        TODO: информацию о том, что по этому эндпоинту был осуществлен и обработан запрос,
-//         нужно сохранить в сервисе статистики
+        addViews(eventList);
+        saveStatistic(request);
         return EventMapper.toEventShortDtoList(eventList);
     }
 
     @Override
-    public EventFullDto findByPublicIdShort(long eventId) {
+    public EventFullDto findByPublicIdShort(long eventId, HttpServletRequest request) {
         Event event = eventRepository.findByIdAndState(eventId, State.PUBLISHED);
         if (event == null) {
             throw new EntityNoFoundException(String.format("событие с id=%d не найдено", eventId));
         } else {
+            addViews(List.of(event));
+            saveStatistic(request);
             return EventMapper.toEventFullDto(event);
         }
+    }
+
+    private void saveStatistic(HttpServletRequest request) {
+        String ip = request.getRemoteAddr();
+        String path = request.getRequestURI();
+
+        EndpointHitDto endpointHitDto = EndpointHitDto.builder()
+                .app("main-server")
+                .uri(path)
+                .ip(ip)
+                .timestamp(LocalDateTime.now().format(DateTimeFormat.formatter))
+                .build();
+        statsClient.add(endpointHitDto);
+    }
+
+    private void addViews(List<Event> events) {
+        events.forEach(event -> event.setViews(+1L));
+        eventRepository.saveAll(events);
     }
 }

@@ -35,6 +35,7 @@ public class EventMapper {
                 .title(newEventDto.getTitle())
                 .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), DateTimeFormat.formatter))
                 .location(location)
+                .views(0)
                 .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
                 .requestModeration(requestModeration)
@@ -51,8 +52,7 @@ public class EventMapper {
 
         return EventShortDto.builder()
                 .id(event.getId())
-//                TODO views
-//                .views(event.getViews())
+                .views(event.getViews())
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
                 .eventDate(event.getEventDate().format(DateTimeFormat.formatter))
@@ -75,6 +75,7 @@ public class EventMapper {
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
                 .paid(event.getPaid())
+                .views(event.getViews())
                 .eventDate(event.getEventDate().format(DateTimeFormat.formatter))
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
                 .description(event.getDescription())
@@ -92,8 +93,6 @@ public class EventMapper {
         return eventList.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
-//    TODO: включать сюда еще статистику просмотров
-//     например: публичный запрос событий по параметрам требует
     public static List<EventShortDto> toEventShortDtoList(List<Event> eventList) {
         return eventList.stream()
                 .map(EventMapper::toEventShortDto)

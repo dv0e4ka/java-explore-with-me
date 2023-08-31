@@ -52,7 +52,6 @@ CREATE TABLE IF NOT EXISTS events
     location_id        BIGINT,
     title              VARCHAR(120),
     paid               BOOLEAN,
---     compilation        BIGINT,
     CONSTRAINT pk_event PRIMARY KEY (id),
     CONSTRAINT fk_event_user FOREIGN KEY (initiator_id) REFERENCES users (id),
     CONSTRAINT fk_event_category FOREIGN KEY (category_id) REFERENCES categories (id),

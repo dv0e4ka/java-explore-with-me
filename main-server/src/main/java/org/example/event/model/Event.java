@@ -71,17 +71,6 @@ public class Event {
     @JoinColumn(name = "location_id")
     private Location location;
 
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != obj.getClass()) return false;
-//        Event event = (Event) obj;
-//        return Objects.equals(id, event.id);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id);
-//    }
+    private long views;
 
 }

@@ -147,16 +147,21 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         RequestStatus requestStatusUpdate = eventRequestStatusUpdateRequest.getStatus();
         List<ParticipationRequest> confirmedRequests = new ArrayList<>();
         List<ParticipationRequest> rejectedRequests = new ArrayList<>();
+
+        if (requestStatusUpdate.equals(RequestStatus.REJECTED)) {
+            requestListOld.forEach(request -> request.setStatus(RequestStatus.REJECTED));
+            return RequestMapper.toEventRequestStatusUpdateResult(new ArrayList<>(), requestListOld);
+        }
         int currLimit = event.getParticipantLimit() - confirmedRequestNumber;
 
         int additionalConfirmRequests = 0;
         if (currLimit == 0) {
-            requestListOld.forEach(request -> request.setStatus(RequestStatus.CANCELED));
+            requestListOld.forEach(request -> request.setStatus(RequestStatus.REJECTED));
             rejectedRequests = requestListOld;
         } else {
             for (int i = 0; i < requestListOld.size(); i++) {
                 if (currLimit == 0) {
-                    requestListOld.get(i).setStatus(RequestStatus.CANCELED);
+                    requestListOld.get(i).setStatus(RequestStatus.REJECTED);
                     rejectedRequests.add(requestListOld.get(i));
                 }
                 ParticipationRequest request = requestListOld.get(i);
