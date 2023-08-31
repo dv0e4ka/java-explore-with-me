@@ -10,15 +10,11 @@ import java.util.List;
 
 public interface RequestRepository extends JpaRepository<ParticipationRequest, Long> {
 
-//    PrivateRequestService. addParticipationRequest
     ParticipationRequest findByRequesterAndEvent (User user, Event event);
 
-//    PrivateRequestService. getAllRequests
     List<ParticipationRequest> findAllByRequester(User user);
 
     List<ParticipationRequest> findAllByIdIn(List<Long> ids);
-
-//    List<ParticipationRequest> countByEventAndStatus(Event event, RequestStatus status);
 
     List<ParticipationRequest> findAllByEvent(Event event);
 

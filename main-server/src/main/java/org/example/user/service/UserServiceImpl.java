@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-// TODO: заполнитоь сервис
 
 @Service
 @RequiredArgsConstructor

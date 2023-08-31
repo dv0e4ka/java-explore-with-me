@@ -31,7 +31,6 @@ public class PublicCompilationServiceImpl implements PublicCompilationService {
         return CompilationMapper.toCompilationDtoList(compilationList);
     }
 
-//     TODO: разобраться с полем ивенты к компиляции
     @Override
     public CompilationDto findById(long compId) {
         Compilation compilation = compilationRepository.findById(compId).orElseThrow(

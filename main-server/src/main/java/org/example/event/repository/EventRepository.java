@@ -16,8 +16,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findByInitiator(User initiator, PageRequest page);
 
-
-//    AdminEventRequest
     @Query("select e " +
             "from Event e " +
             "join fetch e.initiator i " +

@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    // используется в AdminEventRequest
     List<Category> findAllByIdIn(List<Long> ids);
 }
