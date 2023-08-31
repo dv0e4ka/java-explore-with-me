@@ -1,11 +1,11 @@
-package org.example.compilation.mapper;
+package ru.practicum.compilation.mapper;
 
 import lombok.experimental.UtilityClass;
-import org.example.compilation.dto.CompilationDto;
-import org.example.compilation.dto.NewCompilationDto;
-import org.example.compilation.model.Compilation;
-import org.example.event.mapper.EventMapper;
-import org.example.event.model.Event;
+import ru.practicum.compilation.dto.CompilationDto;
+import ru.practicum.compilation.dto.NewCompilationDto;
+import ru.practicum.compilation.model.Compilation;
+import ru.practicum.event.mapper.EventMapper;
+import ru.practicum.event.model.Event;
 
 import java.util.List;
 import java.util.stream.Collectors;

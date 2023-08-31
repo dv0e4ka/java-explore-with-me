@@ -1,8 +1,8 @@
-package org.example.event.repository;
+package ru.practicum.event.repository;
 
-import org.example.enums.State;
-import org.example.event.model.Event;
-import org.example.user.model.User;
+import ru.practicum.enums.State;
+import ru.practicum.event.model.Event;
+import ru.practicum.user.model.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,6 @@
-package org.example.request.service;
+package ru.practicum.request.service;
 
-import org.example.request.dto.ParticipationRequestDto;
+import ru.practicum.request.dto.ParticipationRequestDto;
 
 import java.util.List;
 

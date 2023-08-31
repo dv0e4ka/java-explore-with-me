@@ -1,15 +1,15 @@
-package org.example.event.mapper;
+package ru.practicum.event.mapper;
 
 import lombok.experimental.UtilityClass;
-import org.example.categoriy.model.Category;
-import org.example.categoriy.util.CategoryMapper;
-import org.example.enums.State;
-import org.example.event.dto.*;
-import org.example.event.model.Event;
-import org.example.location.Location;
-import org.example.user.model.User;
-import org.example.user.mapper.UserMapper;
-import org.example.util.DateTimeFormat;
+import ru.practicum.categoriy.model.Category;
+import ru.practicum.categoriy.util.CategoryMapper;
+import ru.practicum.enums.State;
+import ru.practicum.event.dto.*;
+import ru.practicum.event.model.Event;
+import ru.practicum.location.Location;
+import ru.practicum.user.model.User;
+import ru.practicum.user.mapper.UserMapper;
+import ru.practicum.util.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;

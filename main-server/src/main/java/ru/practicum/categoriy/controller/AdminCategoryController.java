@@ -1,10 +1,10 @@
-package org.example.categoriy.controller;
+package ru.practicum.categoriy.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.categoriy.dto.CategoryDto;
-import org.example.categoriy.dto.NewCategoryDto;
-import org.example.categoriy.service.AdminCategoryService;
+import ru.practicum.categoriy.dto.CategoryDto;
+import ru.practicum.categoriy.dto.NewCategoryDto;
+import ru.practicum.categoriy.service.AdminCategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

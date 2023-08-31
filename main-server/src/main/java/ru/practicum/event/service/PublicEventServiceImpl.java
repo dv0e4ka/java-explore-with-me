@@ -1,16 +1,16 @@
-package org.example.event.service;
+package ru.practicum.event.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.enums.EventSort;
-import org.example.enums.State;
-import org.example.event.dto.EventFullDto;
-import org.example.event.dto.EventShortDto;
-import org.example.event.mapper.EventMapper;
-import org.example.event.model.Event;
-import org.example.event.repository.EventRepository;
-import org.example.exception.model.EntityNoFoundException;
-import org.example.exception.model.InvalidParameterException;
-import org.example.util.DateTimeFormat;
+import ru.practicum.enums.EventSort;
+import ru.practicum.enums.State;
+import ru.practicum.event.dto.EventFullDto;
+import ru.practicum.event.dto.EventShortDto;
+import ru.practicum.event.mapper.EventMapper;
+import ru.practicum.event.model.Event;
+import ru.practicum.event.repository.EventRepository;
+import ru.practicum.exception.model.EntityNoFoundException;
+import ru.practicum.exception.model.InvalidParameterException;
+import ru.practicum.util.DateTimeFormat;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

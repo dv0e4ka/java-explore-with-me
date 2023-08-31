@@ -1,7 +1,7 @@
-package org.example.exception;
+package ru.practicum.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.exception.model.*;
+import ru.practicum.exception.model.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

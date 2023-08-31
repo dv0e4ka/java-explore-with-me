@@ -1,4 +1,4 @@
-package org.example.app.util;
+package ru.practicum.app.util;
 
 import java.time.format.DateTimeFormatter;
 

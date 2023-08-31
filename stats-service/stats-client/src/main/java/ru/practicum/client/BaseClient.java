@@ -1,4 +1,4 @@
-package org.example.client;
+package ru.practicum.client;
 
 
 import org.springframework.http.*;

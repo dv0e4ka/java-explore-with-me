@@ -1,7 +1,7 @@
-package org.example.categoriy.service;
+package ru.practicum.categoriy.service;
 
-import org.example.categoriy.dto.CategoryDto;
-import org.example.categoriy.dto.NewCategoryDto;
+import ru.practicum.categoriy.dto.CategoryDto;
+import ru.practicum.categoriy.dto.NewCategoryDto;
 
 public interface AdminCategoryService {
 

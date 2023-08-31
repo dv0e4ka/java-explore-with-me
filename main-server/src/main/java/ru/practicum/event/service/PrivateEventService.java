@@ -1,12 +1,12 @@
-package org.example.event.service;
+package ru.practicum.event.service;
 
-import org.example.event.dto.EventFullDto;
-import org.example.event.dto.EventShortDto;
-import org.example.event.dto.NewEventDto;
-import org.example.event.dto.UpdateEventUserRequest;
-import org.example.request.dto.EventRequestStatusUpdateRequest;
-import org.example.request.dto.EventRequestStatusUpdateResult;
-import org.example.request.dto.ParticipationRequestDto;
+import ru.practicum.event.dto.EventFullDto;
+import ru.practicum.event.dto.EventShortDto;
+import ru.practicum.event.dto.NewEventDto;
+import ru.practicum.event.dto.UpdateEventUserRequest;
+import ru.practicum.request.dto.EventRequestStatusUpdateRequest;
+import ru.practicum.request.dto.EventRequestStatusUpdateResult;
+import ru.practicum.request.dto.ParticipationRequestDto;
 
 import java.util.List;
 

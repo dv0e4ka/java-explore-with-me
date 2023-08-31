@@ -1,11 +1,11 @@
-package org.example.compilation.controller;
+package ru.practicum.compilation.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.compilation.dto.CompilationDto;
-import org.example.compilation.dto.NewCompilationDto;
-import org.example.compilation.dto.UpdateCompilationRequest;
-import org.example.compilation.service.AdminCompilationService;
+import ru.practicum.compilation.dto.CompilationDto;
+import ru.practicum.compilation.dto.NewCompilationDto;
+import ru.practicum.compilation.dto.UpdateCompilationRequest;
+import ru.practicum.compilation.service.AdminCompilationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

@@ -1,11 +1,11 @@
-package org.example.event.controller;
+package ru.practicum.event.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.enums.EventSort;
-import org.example.event.dto.EventFullDto;
-import org.example.event.dto.EventShortDto;
-import org.example.event.service.PublicEventService;
+import ru.practicum.enums.EventSort;
+import ru.practicum.event.dto.EventFullDto;
+import ru.practicum.event.dto.EventShortDto;
+import ru.practicum.event.service.PublicEventService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

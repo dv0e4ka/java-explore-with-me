@@ -1,15 +1,15 @@
-package org.example.compilation.service;
+package ru.practicum.compilation.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.compilation.dto.CompilationDto;
-import org.example.compilation.dto.NewCompilationDto;
-import org.example.compilation.dto.UpdateCompilationRequest;
-import org.example.compilation.model.Compilation;
-import org.example.compilation.repository.CompilationRepository;
-import org.example.compilation.mapper.CompilationMapper;
-import org.example.event.model.Event;
-import org.example.event.repository.EventRepository;
-import org.example.exception.model.EntityNoFoundException;
+import ru.practicum.compilation.dto.CompilationDto;
+import ru.practicum.compilation.dto.NewCompilationDto;
+import ru.practicum.compilation.dto.UpdateCompilationRequest;
+import ru.practicum.compilation.model.Compilation;
+import ru.practicum.compilation.repository.CompilationRepository;
+import ru.practicum.compilation.mapper.CompilationMapper;
+import ru.practicum.event.model.Event;
+import ru.practicum.event.repository.EventRepository;
+import ru.practicum.exception.model.EntityNoFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

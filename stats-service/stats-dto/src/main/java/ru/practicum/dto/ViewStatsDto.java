@@ -1,4 +1,4 @@
-package org.example.dto;
+package ru.practicum.dto;
 
 import lombok.Builder;
 import lombok.Getter;

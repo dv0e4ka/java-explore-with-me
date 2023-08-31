@@ -1,8 +1,8 @@
-package org.example.app;
+package ru.practicum.app;
 
 
-import org.example.client.BaseClient;
-import org.example.dto.EndpointHitDto;
+import ru.practicum.client.BaseClient;
+import ru.practicum.dto.EndpointHitDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

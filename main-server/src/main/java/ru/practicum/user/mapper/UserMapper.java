@@ -1,10 +1,10 @@
-package org.example.user.mapper;
+package ru.practicum.user.mapper;
 
 import lombok.experimental.UtilityClass;
-import org.example.user.dto.NewUserRequest;
-import org.example.user.dto.UserDto;
-import org.example.user.dto.UserShortDto;
-import org.example.user.model.User;
+import ru.practicum.user.dto.NewUserRequest;
+import ru.practicum.user.dto.UserDto;
+import ru.practicum.user.dto.UserShortDto;
+import ru.practicum.user.model.User;
 
 import java.util.List;
 import java.util.stream.Collectors;

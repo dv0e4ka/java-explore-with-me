@@ -1,18 +1,18 @@
-package org.example.request.service;
+package ru.practicum.request.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.enums.RequestStatus;
-import org.example.enums.State;
-import org.example.event.model.Event;
-import org.example.event.repository.EventRepository;
-import org.example.exception.model.EntityNoFoundException;
-import org.example.exception.model.RequestException;
-import org.example.request.dto.ParticipationRequestDto;
-import org.example.request.model.ParticipationRequest;
-import org.example.request.repository.RequestRepository;
-import org.example.request.mapper.RequestMapper;
-import org.example.user.model.User;
-import org.example.user.repository.UserRepository;
+import ru.practicum.enums.RequestStatus;
+import ru.practicum.enums.State;
+import ru.practicum.event.model.Event;
+import ru.practicum.event.repository.EventRepository;
+import ru.practicum.exception.model.EntityNoFoundException;
+import ru.practicum.exception.model.RequestException;
+import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.request.model.ParticipationRequest;
+import ru.practicum.request.repository.RequestRepository;
+import ru.practicum.request.mapper.RequestMapper;
+import ru.practicum.user.model.User;
+import ru.practicum.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

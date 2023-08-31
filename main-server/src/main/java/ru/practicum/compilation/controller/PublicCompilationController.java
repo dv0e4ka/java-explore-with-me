@@ -1,9 +1,9 @@
-package org.example.compilation.controller;
+package ru.practicum.compilation.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.compilation.dto.CompilationDto;
-import org.example.compilation.service.PublicCompilationService;
+import ru.practicum.compilation.dto.CompilationDto;
+import ru.practicum.compilation.service.PublicCompilationService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;

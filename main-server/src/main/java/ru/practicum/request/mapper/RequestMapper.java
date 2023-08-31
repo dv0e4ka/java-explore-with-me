@@ -1,13 +1,13 @@
-package org.example.request.mapper;
+package ru.practicum.request.mapper;
 
 import lombok.experimental.UtilityClass;
-import org.example.enums.RequestStatus;
-import org.example.event.model.Event;
-import org.example.request.dto.EventRequestStatusUpdateResult;
-import org.example.request.dto.ParticipationRequestDto;
-import org.example.request.model.ParticipationRequest;
-import org.example.user.model.User;
-import org.example.util.DateTimeFormat;
+import ru.practicum.enums.RequestStatus;
+import ru.practicum.event.model.Event;
+import ru.practicum.request.dto.EventRequestStatusUpdateResult;
+import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.request.model.ParticipationRequest;
+import ru.practicum.user.model.User;
+import ru.practicum.util.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;

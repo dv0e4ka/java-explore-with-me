@@ -1,4 +1,4 @@
-package org.example.exception.model;
+package ru.practicum.exception.model;
 
 public class PatchEventStateException extends RuntimeException {
     public PatchEventStateException(String message) {

@@ -1,11 +1,11 @@
-package org.example.compilation.service;
+package ru.practicum.compilation.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.compilation.dto.CompilationDto;
-import org.example.compilation.model.Compilation;
-import org.example.compilation.repository.CompilationRepository;
-import org.example.compilation.mapper.CompilationMapper;
-import org.example.exception.model.EntityNoFoundException;
+import ru.practicum.compilation.dto.CompilationDto;
+import ru.practicum.compilation.model.Compilation;
+import ru.practicum.compilation.repository.CompilationRepository;
+import ru.practicum.compilation.mapper.CompilationMapper;
+import ru.practicum.exception.model.EntityNoFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

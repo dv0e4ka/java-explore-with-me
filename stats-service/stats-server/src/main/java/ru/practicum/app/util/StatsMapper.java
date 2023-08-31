@@ -1,14 +1,14 @@
-package org.example.app.util;
+package ru.practicum.app.util;
 
 import lombok.experimental.UtilityClass;
-import org.example.app.model.EndpointHit;
-import org.example.app.model.ViewStats;
-import org.example.dto.EndpointHitDto;
-import org.example.dto.ViewStatsDto;
+import ru.practicum.app.model.EndpointHit;
+import ru.practicum.app.model.ViewStats;
+import ru.practicum.dto.EndpointHitDto;
+import ru.practicum.dto.ViewStatsDto;
 
 import java.time.LocalDateTime;
 
-import static org.example.app.util.DataTime.formatter;
+import static ru.practicum.app.util.DataTime.formatter;
 
 @UtilityClass
 public class StatsMapper {

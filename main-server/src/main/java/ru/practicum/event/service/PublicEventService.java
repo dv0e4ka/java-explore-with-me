@@ -1,8 +1,8 @@
-package org.example.event.service;
+package ru.practicum.event.service;
 
-import org.example.enums.EventSort;
-import org.example.event.dto.EventFullDto;
-import org.example.event.dto.EventShortDto;
+import ru.practicum.enums.EventSort;
+import ru.practicum.event.dto.EventFullDto;
+import ru.practicum.event.dto.EventShortDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

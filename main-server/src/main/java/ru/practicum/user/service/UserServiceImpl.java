@@ -1,12 +1,12 @@
-package org.example.user.service;
+package ru.practicum.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.exception.model.EntityNoFoundException;
-import org.example.user.dto.NewUserRequest;
-import org.example.user.dto.UserDto;
-import org.example.user.model.User;
-import org.example.user.repository.UserRepository;
-import org.example.user.mapper.UserMapper;
+import ru.practicum.exception.model.EntityNoFoundException;
+import ru.practicum.user.dto.NewUserRequest;
+import ru.practicum.user.dto.UserDto;
+import ru.practicum.user.model.User;
+import ru.practicum.user.repository.UserRepository;
+import ru.practicum.user.mapper.UserMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

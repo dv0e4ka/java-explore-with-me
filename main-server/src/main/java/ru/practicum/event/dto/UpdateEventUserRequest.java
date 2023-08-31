@@ -1,9 +1,9 @@
-package org.example.event.dto;
+package ru.practicum.event.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.example.enums.PrivateStateAction;
-import org.example.location.Location;
+import ru.practicum.enums.PrivateStateAction;
+import ru.practicum.location.Location;
 
 import javax.validation.constraints.Size;
 

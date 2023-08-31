@@ -1,9 +1,9 @@
-package org.example.categoriy.util;
+package ru.practicum.categoriy.util;
 
 import lombok.experimental.UtilityClass;
-import org.example.categoriy.dto.CategoryDto;
-import org.example.categoriy.dto.NewCategoryDto;
-import org.example.categoriy.model.Category;
+import ru.practicum.categoriy.dto.CategoryDto;
+import ru.practicum.categoriy.dto.NewCategoryDto;
+import ru.practicum.categoriy.model.Category;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
-package org.example.event.service;
+package ru.practicum.event.service;
 
-import org.example.event.dto.EventFullDto;
-import org.example.event.dto.UpdateEventAdminRequest;
+import ru.practicum.event.dto.EventFullDto;
+import ru.practicum.event.dto.UpdateEventAdminRequest;
 
 import java.util.List;
 

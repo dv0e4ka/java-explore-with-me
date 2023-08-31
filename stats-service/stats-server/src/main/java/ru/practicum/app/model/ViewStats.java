@@ -1,4 +1,4 @@
-package org.example.app.model;
+package ru.practicum.app.model;
 
 import lombok.*;
 

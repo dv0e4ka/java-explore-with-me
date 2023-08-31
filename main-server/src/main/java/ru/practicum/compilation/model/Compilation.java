@@ -1,7 +1,7 @@
-package org.example.compilation.model;
+package ru.practicum.compilation.model;
 
 import lombok.*;
-import org.example.event.model.Event;
+import ru.practicum.event.model.Event;
 
 import javax.persistence.*;
 import java.util.List;

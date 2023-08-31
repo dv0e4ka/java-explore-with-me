@@ -1,6 +1,6 @@
-package org.example.user.repository;
+package ru.practicum.user.repository;
 
-import org.example.user.model.User;
+import ru.practicum.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

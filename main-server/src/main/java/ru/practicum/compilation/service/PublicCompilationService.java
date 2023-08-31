@@ -1,6 +1,6 @@
-package org.example.compilation.service;
+package ru.practicum.compilation.service;
 
-import org.example.compilation.dto.CompilationDto;
+import ru.practicum.compilation.dto.CompilationDto;
 
 import java.util.List;
 

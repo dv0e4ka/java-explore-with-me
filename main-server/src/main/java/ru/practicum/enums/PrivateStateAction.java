@@ -1,4 +1,4 @@
-package org.example.enums;
+package ru.practicum.enums;
 
 public enum PrivateStateAction {
     SEND_TO_REVIEW,

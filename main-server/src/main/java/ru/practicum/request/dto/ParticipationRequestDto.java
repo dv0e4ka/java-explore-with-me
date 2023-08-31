@@ -1,8 +1,8 @@
-package org.example.request.dto;
+package ru.practicum.request.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.example.enums.RequestStatus;
+import ru.practicum.enums.RequestStatus;
 
 @Data
 @Builder

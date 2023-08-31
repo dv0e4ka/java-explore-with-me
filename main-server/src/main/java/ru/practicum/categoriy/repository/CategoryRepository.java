@@ -1,6 +1,6 @@
-package org.example.categoriy.repository;
+package ru.practicum.categoriy.repository;
 
-import org.example.categoriy.model.Category;
+import ru.practicum.categoriy.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

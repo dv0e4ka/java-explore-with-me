@@ -1,11 +1,11 @@
-package org.example.categoriy.service;
+package ru.practicum.categoriy.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.categoriy.dto.CategoryDto;
-import org.example.categoriy.model.Category;
-import org.example.categoriy.repository.CategoryRepository;
-import org.example.categoriy.util.CategoryMapper;
-import org.example.exception.model.EntityNoFoundException;
+import ru.practicum.categoriy.dto.CategoryDto;
+import ru.practicum.categoriy.model.Category;
+import ru.practicum.categoriy.repository.CategoryRepository;
+import ru.practicum.categoriy.util.CategoryMapper;
+import ru.practicum.exception.model.EntityNoFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 

@@ -1,12 +1,12 @@
-package org.example.app.service;
+package ru.practicum.app.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.app.util.StatsMapper;
-import org.example.app.model.EndpointHit;
-import org.example.app.model.ViewStats;
-import org.example.app.repository.StatsRepository;
-import org.example.dto.EndpointHitDto;
-import org.example.dto.ViewStatsDto;
+import ru.practicum.app.util.StatsMapper;
+import ru.practicum.app.model.EndpointHit;
+import ru.practicum.app.model.ViewStats;
+import ru.practicum.app.repository.StatsRepository;
+import ru.practicum.dto.EndpointHitDto;
+import ru.practicum.dto.ViewStatsDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,10 +1,10 @@
-package org.example.event.model;
+package ru.practicum.event.model;
 
 import lombok.*;
-import org.example.categoriy.model.Category;
-import org.example.enums.State;
-import org.example.location.Location;
-import org.example.user.model.User;
+import ru.practicum.categoriy.model.Category;
+import ru.practicum.enums.State;
+import ru.practicum.location.Location;
+import ru.practicum.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

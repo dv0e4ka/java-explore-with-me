@@ -1,9 +1,9 @@
-package org.example.request.dto;
+package ru.practicum.request.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.enums.RequestStatus;
+import ru.practicum.enums.RequestStatus;
 
 import java.util.List;
 

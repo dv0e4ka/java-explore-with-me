@@ -1,8 +1,8 @@
-package org.example.event.dto;
+package ru.practicum.event.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.example.location.Location;
+import ru.practicum.location.Location;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

@@ -1,8 +1,8 @@
-package org.example.compilation.service;
+package ru.practicum.compilation.service;
 
-import org.example.compilation.dto.CompilationDto;
-import org.example.compilation.dto.NewCompilationDto;
-import org.example.compilation.dto.UpdateCompilationRequest;
+import ru.practicum.compilation.dto.CompilationDto;
+import ru.practicum.compilation.dto.NewCompilationDto;
+import ru.practicum.compilation.dto.UpdateCompilationRequest;
 
 public interface AdminCompilationService {
 

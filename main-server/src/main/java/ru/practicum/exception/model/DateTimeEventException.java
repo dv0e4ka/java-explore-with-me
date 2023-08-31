@@ -1,4 +1,4 @@
-package org.example.exception.model;
+package ru.practicum.exception.model;
 
 public class DateTimeEventException extends RuntimeException {
     public DateTimeEventException(String message) {

@@ -1,10 +1,10 @@
-package org.example.app;
+package ru.practicum.app;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.app.service.StatsService;
-import org.example.dto.EndpointHitDto;
-import org.example.dto.ViewStatsDto;
+import ru.practicum.app.service.StatsService;
+import ru.practicum.dto.EndpointHitDto;
+import ru.practicum.dto.ViewStatsDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +20,15 @@ public class StatsController {
     private final StatsService statsService;
 
     @PostMapping("/hit")
-    public ResponseEntity<EndpointHitDto> add(@RequestBody EndpointHitDto endPointHitDto) {
-        return new ResponseEntity<>(statsService.add(endPointHitDto), HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public EndpointHitDto add(@RequestBody EndpointHitDto endPointHitDto) {
+        return statsService.add(endPointHitDto);
 
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<List<ViewStatsDto>> getStats(@RequestParam
+    @ResponseStatus(HttpStatus.OK)
+    public List<ViewStatsDto> getStats(@RequestParam
                                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
                                                        LocalDateTime start,
 
@@ -38,6 +40,6 @@ public class StatsController {
                                                        @RequestParam(defaultValue = "false") Boolean unique) {
         log.info("поспупил запрос");
         List<ViewStatsDto> responseBody = statsService.getStats(start, end, uris, unique);
-        return new ResponseEntity<>(responseBody, HttpStatus.OK);
+        return responseBody;
     }
 }

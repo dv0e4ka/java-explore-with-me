@@ -1,9 +1,9 @@
-package org.example.compilation.dto;
+package ru.practicum.compilation.dto;
 
 
 import lombok.Builder;
 import lombok.Data;
-import org.example.event.dto.EventShortDto;
+import ru.practicum.event.dto.EventShortDto;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

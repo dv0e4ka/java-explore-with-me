@@ -1,9 +1,9 @@
-package org.example.request.controller;
+package ru.practicum.request.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.request.dto.ParticipationRequestDto;
-import org.example.request.service.RequestService;
+import ru.practicum.request.dto.ParticipationRequestDto;
+import ru.practicum.request.service.RequestService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

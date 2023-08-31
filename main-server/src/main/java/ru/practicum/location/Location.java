@@ -1,4 +1,4 @@
-package org.example.location;
+package ru.practicum.location;
 
 import lombok.*;
 

@@ -1,10 +1,10 @@
-package org.example.event.dto;
+package ru.practicum.event.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.enums.AdminStateAction;
-import org.example.location.Location;
+import ru.practicum.enums.AdminStateAction;
+import ru.practicum.location.Location;
 
 import javax.validation.constraints.Size;
 

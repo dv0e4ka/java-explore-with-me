@@ -1,9 +1,9 @@
-package org.example.request.model;
+package ru.practicum.request.model;
 
 import lombok.*;
-import org.example.event.model.Event;
-import org.example.enums.RequestStatus;
-import org.example.user.model.User;
+import ru.practicum.event.model.Event;
+import ru.practicum.enums.RequestStatus;
+import ru.practicum.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
