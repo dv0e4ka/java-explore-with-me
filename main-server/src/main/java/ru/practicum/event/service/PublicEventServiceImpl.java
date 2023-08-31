@@ -1,6 +1,8 @@
 package ru.practicum.event.service;
 
 import lombok.RequiredArgsConstructor;
+import ru.practicum.app.StatsClient;
+import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.enums.EventSort;
 import ru.practicum.enums.State;
 import ru.practicum.event.dto.EventFullDto;
@@ -24,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
-//    private final StatsClient statsClient;
+    private final StatsClient statsClient;
 
 
     @Transactional
@@ -70,8 +72,8 @@ public class PublicEventServiceImpl implements PublicEventService {
                 onlyAvailable,
                 page
         );
+        saveStatistic(request);
         addViews(eventList);
-//        saveStatistic(request);
         return EventMapper.toEventShortDtoList(eventList);
     }
 
@@ -82,23 +84,23 @@ public class PublicEventServiceImpl implements PublicEventService {
             throw new EntityNoFoundException(String.format("событие с id=%d не найдено", eventId));
         } else {
             addViews(List.of(event));
-//            saveStatistic(request);
+            saveStatistic(request);
             return EventMapper.toEventFullDto(event);
         }
     }
 
-//    private void saveStatistic(HttpServletRequest request) {
-//        String ip = request.getRemoteAddr();
-//        String path = request.getRequestURI();
-//
-//        EndpointHitDto endpointHitDto = EndpointHitDto.builder()
-//                .app("main-server")
-//                .uri(path)
-//                .ip(ip)
-//                .timestamp(LocalDateTime.now().format(DateTimeFormat.formatter))
-//                .build();
-//        statsClient.add(endpointHitDto);
-//    }
+    private void saveStatistic(HttpServletRequest request) {
+        String ip = request.getRemoteAddr();
+        String path = request.getRequestURI();
+
+        EndpointHitDto endpointHitDto = EndpointHitDto.builder()
+                .app("main-server")
+                .uri(path)
+                .ip(ip)
+                .timestamp(LocalDateTime.now().format(DateTimeFormat.formatter))
+                .build();
+        statsClient.add(endpointHitDto);
+    }
 
     private void addViews(List<Event> events) {
         events.forEach(event -> event.setViews(+1L));

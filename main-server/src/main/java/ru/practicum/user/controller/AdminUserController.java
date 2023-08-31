@@ -32,7 +32,7 @@ public class AdminUserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getUsers(@RequestParam (required = false) List<Long> ids,
+    public List<UserDto> getUsers(@RequestParam(required = false) List<Long> ids,
                                  @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                  @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("получен запрос на получение информации о пользователях");
