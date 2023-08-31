@@ -9,7 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>service</artifactId>
+    <groupId>ru.practicum</groupId>
+    <artifactId>stats-server</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
