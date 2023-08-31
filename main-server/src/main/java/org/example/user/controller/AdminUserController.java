@@ -2,6 +2,7 @@ package org.example.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.user.dto.NewUserRequest;
 import org.example.user.dto.UserDto;
 import org.example.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class AdminUserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto save(@Valid @RequestBody UserDto userDto) {
+    public UserDto save(@Valid @RequestBody NewUserRequest userDto) {
         log.info("получен запрос на добавление нового пользователя: {}", userDto.getName());
         return userService.registerUser(userDto);
     }

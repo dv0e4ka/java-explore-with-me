@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.compilation.dto.CompilationDto;
 import org.example.compilation.model.Compilation;
 import org.example.compilation.repository.CompilationRepository;
-import org.example.compilation.util.CompilationMapper;
+import org.example.compilation.mapper.CompilationMapper;
 import org.example.exception.model.EntityNoFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -1,24 +1,25 @@
-package org.example.compilation.util;
+package org.example.compilation.mapper;
 
 import lombok.experimental.UtilityClass;
 import org.example.compilation.dto.CompilationDto;
 import org.example.compilation.dto.NewCompilationDto;
-import org.example.compilation.dto.UpdateCompilationRequest;
 import org.example.compilation.model.Compilation;
-import org.example.event.dto.EventShortDto;
 import org.example.event.mapper.EventMapper;
 import org.example.event.model.Event;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @UtilityClass
 public class CompilationMapper {
 
     public static Compilation toCompilation(NewCompilationDto newCompilationDto, List<Event> events) {
+        boolean isPinned = false;
+        if (newCompilationDto.getPinned() != null) {
+            isPinned = newCompilationDto.getPinned();
+        }
         return Compilation.builder()
-                .pinned(newCompilationDto.getPinned())
+                .pinned(isPinned)
                 .title(newCompilationDto.getTitle())
                 .events(events)
                 .build();

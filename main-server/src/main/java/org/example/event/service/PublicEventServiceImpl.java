@@ -36,11 +36,9 @@ public class PublicEventServiceImpl implements PublicEventService {
         if (sort != null) {
             switch (sort) {
                 case VIEWS:
-//                page.withSort(Sort.by("views").descending());
                     page.withSort(Sort.by(Sort.Direction.ASC, "views"));
                     break;
                 default:
-//                page.withSort(Sort.by("eventDate").ascending());
                     page.withSort(Sort.by(Sort.Direction.ASC, "eventDate"));
             }
         }
@@ -82,11 +80,5 @@ public class PublicEventServiceImpl implements PublicEventService {
         } else {
             return EventMapper.toEventFullDto(event);
         }
-    }
-
-    private Event findEventById(long eventId) {
-        return eventRepository.findById(eventId).orElseThrow(
-                () -> new EntityNoFoundException(String.format("событие с id=%d не найдено", eventId))
-        );
     }
 }

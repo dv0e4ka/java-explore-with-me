@@ -46,7 +46,7 @@ public class RequestServiceImpl implements RequestService {
                     "не может повторно подать заявку на событие id=%d", userId, eventId));
         }
 
-        if (event.getConfirmedRequests() == event.getParticipantLimit()) {
+        if (event.getConfirmedRequests() == event.getParticipantLimit() && event.getParticipantLimit() != 0) {
             throw new RequestException(String.format("у события id=%d достигнут лимит запросов на участие", eventId));
         }
 

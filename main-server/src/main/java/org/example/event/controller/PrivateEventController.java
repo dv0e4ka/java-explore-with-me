@@ -7,7 +7,6 @@ import org.example.event.service.PrivateEventService;
 import org.example.request.dto.EventRequestStatusUpdateRequest;
 import org.example.request.dto.EventRequestStatusUpdateResult;
 import org.example.request.dto.ParticipationRequestDto;
-import org.example.request.service.RequestService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +23,10 @@ import java.util.List;
 @Validated
 public class PrivateEventController {
     private final PrivateEventService eventService;
-    private final RequestService requestService;
 
     @PostMapping("/{userId}/events")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventShortDto addEvent(@Valid @RequestBody NewEventDto newEventDto, @PathVariable long userId) {
+    public EventFullDto addEvent(@Valid @RequestBody NewEventDto newEventDto, @PathVariable long userId) {
         log.info("пришел запрос на добавление события добавленным пользователем id={}", userId);
         return eventService.addEvent(userId, newEventDto);
     }
@@ -38,7 +36,11 @@ public class PrivateEventController {
     public EventFullDto patchUserEvent(@Valid @RequestBody UpdateEventUserRequest updateEventUserRequest,
                                @PathVariable long userId, @PathVariable long eventId) {
         log.info("пришел запрос на изменения события id={} пользователя id={}", eventId, userId);
-        return eventService.patchUserEvent(updateEventUserRequest, userId, eventId);
+        EventFullDto eventFullDto = eventService.patchUserEvent(updateEventUserRequest, userId, eventId);
+        log.info("описание вернувшегося описания ивента={} после патча пользователя", eventId);
+        log.info(eventFullDto.getTitle());
+        log.info(eventFullDto.getDescription());
+        return eventFullDto;
     }
 
     @GetMapping("/{userId}/events")

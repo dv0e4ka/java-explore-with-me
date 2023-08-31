@@ -42,7 +42,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "where e.state = 'PUBLISHED' " +
             "and (:text is null or (lower(e.annotation)) like lower(concat('%', :text, '%')) " +
             "or (lower(e.description)) like lower(concat('%', :text, '%'))) " +
-            "and (:categories is null or e.category in :categories) " +
+            "and (:categories is null or e.category.id in :categories) " +
             "and (:paid is null or e.paid = :paid) " +
             "and e.eventDate >= :rangeStart " +
             "and e.eventDate <= :rangeEnd " +

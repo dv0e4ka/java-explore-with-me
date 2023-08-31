@@ -1,6 +1,7 @@
-package org.example.user.util;
+package org.example.user.mapper;
 
 import lombok.experimental.UtilityClass;
+import org.example.user.dto.NewUserRequest;
 import org.example.user.dto.UserDto;
 import org.example.user.dto.UserShortDto;
 import org.example.user.model.User;
@@ -18,7 +19,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static User toUser(UserDto userDto) {
+    public static User toUser(NewUserRequest userDto) {
         return User.builder()
                 .name(userDto.getName())
                 .email(userDto.getEmail())

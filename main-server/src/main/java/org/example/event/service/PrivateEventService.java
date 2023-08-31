@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public interface PrivateEventService {
-    EventShortDto addEvent(long userId, NewEventDto newEventDto);
+    EventFullDto addEvent(long userId, NewEventDto newEventDto);
 
     EventFullDto patchUserEvent(UpdateEventUserRequest updateEvent, long userId, long eventId);
 

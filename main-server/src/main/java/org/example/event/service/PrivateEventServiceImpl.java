@@ -1,6 +1,7 @@
 package org.example.event.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.categoriy.model.Category;
 import org.example.categoriy.repository.CategoryRepository;
 import org.example.enums.PrivateStateAction;
@@ -39,6 +40,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PrivateEventServiceImpl implements PrivateEventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
@@ -48,7 +50,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
     @Transactional
     @Override
-    public EventShortDto addEvent(long userId, NewEventDto newEventDto) {
+    public EventFullDto addEvent(long userId, NewEventDto newEventDto) {
         User requester = findUserById(userId);
 
         Category category = findCategoryById(newEventDto.getCategory());
@@ -58,8 +60,14 @@ public class PrivateEventServiceImpl implements PrivateEventService {
         Event event = EventMapper.toEvent(newEventDto, requester, location, category);
         checkDateTime(event);
 
+        log.info("пришол в private ивент title={}", newEventDto.getTitle());
+        log.info("пришол в private описание ивента title={}", newEventDto.getDescription());
+
         Event eventSaved = eventRepository.save(event);
-        return EventMapper.toEventShortDto(eventSaved);
+        log.info("добавлен в private ивент id={}", eventSaved.getId());
+        log.info("добавлен в private ивент title={}", eventSaved.getTitle());
+        log.info("добавлено в private описание ивента title={}", eventSaved.getDescription());
+        return EventMapper.toEventFullDto(eventSaved);
     }
 
     @Transactional
@@ -80,7 +88,6 @@ public class PrivateEventServiceImpl implements PrivateEventService {
 
         Event updatedFieldsEvent = updateFieldByUserRequest(eventFound, updateEvent);
         Event patchedEvent = eventRepository.save(updatedFieldsEvent);
-
         return EventMapper.toEventFullDto(patchedEvent);
     }
 

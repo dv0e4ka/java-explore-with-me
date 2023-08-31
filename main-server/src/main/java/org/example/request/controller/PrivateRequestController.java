@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.request.dto.ParticipationRequestDto;
 import org.example.request.service.RequestService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class PrivateRequestController {
     private final RequestService requestService;
 
     @PostMapping("/{userId}/requests")
+    @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto addParticipationRequest(@PathVariable long userId, @RequestParam long eventId) {
         log.info("получен запрос на добавления заявки пользователя id={} на участие в событии", userId);
         return requestService.addParticipationRequest(userId, eventId);

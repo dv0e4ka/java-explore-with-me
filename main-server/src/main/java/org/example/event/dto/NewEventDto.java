@@ -30,6 +30,7 @@ public class NewEventDto {
 
     private String eventDate;
     private Location location;
+
     private Boolean paid;
     private int participantLimit;
     private Boolean requestModeration;

@@ -6,7 +6,7 @@ import org.example.compilation.dto.NewCompilationDto;
 import org.example.compilation.dto.UpdateCompilationRequest;
 import org.example.compilation.model.Compilation;
 import org.example.compilation.repository.CompilationRepository;
-import org.example.compilation.util.CompilationMapper;
+import org.example.compilation.mapper.CompilationMapper;
 import org.example.event.model.Event;
 import org.example.event.repository.EventRepository;
 import org.example.exception.model.EntityNoFoundException;

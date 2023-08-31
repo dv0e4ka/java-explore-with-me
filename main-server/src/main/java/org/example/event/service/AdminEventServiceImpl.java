@@ -1,6 +1,7 @@
 package org.example.event.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.categoriy.model.Category;
 import org.example.categoriy.repository.CategoryRepository;
 import org.example.enums.AdminStateAction;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AdminEventServiceImpl implements AdminEventService {
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
@@ -71,15 +73,12 @@ public class AdminEventServiceImpl implements AdminEventService {
         if (rangeEnd != null) {
             end = LocalDateTime.parse(rangeEnd, DateTimeFormat.formatter);
         } else {
-//            TODO изменить наверное до 1 года
             end = LocalDateTime.now().plusYears(2);
         }
-
 
         PageRequest page = PageRequest.of(from, size);
 
         List<Event> eventList = eventRepository.findAllByParam(userIds, states, categoryIds, start, end, page);
-        System.out.println(eventList.size());
         return EventMapper.toEventFullDtoList(eventList);
     }
 
@@ -161,12 +160,19 @@ public class AdminEventServiceImpl implements AdminEventService {
             event.setRequestModeration(updateEvent.getRequestModeration());
         }
 
+        if (updateEvent.getDescription() != null) {
+            event.setDescription(updateEvent.getDescription());
+        }
+
         String title = updateEvent.getTitle();
         if (title != null) {
             event.setTitle(title);
         }
 
         Event eventUpdated = eventRepository.save(event);
+        log.info("patch в admin ивент id={}", eventUpdated.getId());
+        log.info("patch в admin ивент title={}", eventUpdated.getTitle());
+        log.info("patch в admin описание ивента title={}", eventUpdated.getDescription());
 
         return EventMapper.toEventFullDto(eventUpdated);
     }

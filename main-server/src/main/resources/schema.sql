@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS locations CASCADE;
-DROP TABLE IF EXISTS compilations;
-DROP TABLE IF EXISTS compilation_events_relation;
 DROP TABLE IF EXISTS events CASCADE;
+DROP TABLE IF EXISTS compilations CASCADE;
+DROP TABLE IF EXISTS compilation_events_relation CASCADE;
 DROP TABLE IF EXISTS requests CASCADE;
 DROP TABLE IF EXISTS bar CASCADE;
 DROP TABLE IF EXISTS foo CASCADE;
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS events
     views              BIGINT,
     participant_limit  INT,
     created_on         TIMESTAMP WITHOUT TIME ZONE,
-    description        VARCHAR(5000),
+    description        VARCHAR(7000),
     published_on       TIMESTAMP WITHOUT TIME ZONE,
     state              VARCHAR(9),
     request_moderation BOOLEAN,

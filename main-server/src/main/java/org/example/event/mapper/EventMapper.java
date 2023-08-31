@@ -8,7 +8,7 @@ import org.example.event.dto.*;
 import org.example.event.model.Event;
 import org.example.location.Location;
 import org.example.user.model.User;
-import org.example.user.util.UserMapper;
+import org.example.user.mapper.UserMapper;
 import org.example.util.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -19,20 +19,15 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class EventMapper {
 
-    public static Event toEvent(EventFullDto eventFullDto) {
-        return Event.builder()
-                .build();
-    }
-
-
-    public static Event toEvent(EventShortDto eventShortDto) {
-        return Event.builder()
-                .build();
-    }
-
-
-
     public static Event toEvent(NewEventDto newEventDto, User requester, Location location, Category category) {
+        if (newEventDto.getPaid() == null) {
+            newEventDto.setPaid(false);
+        }
+
+        boolean requestModeration = true;
+        if (newEventDto.getRequestModeration() != null) {
+            requestModeration = newEventDto.getRequestModeration();
+        }
         return Event.builder()
                 .annotation(newEventDto.getAnnotation())
                 .category(category)
@@ -42,37 +37,18 @@ public class EventMapper {
                 .location(location)
                 .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
-                .requestModeration(newEventDto.getRequestModeration())
+                .requestModeration(requestModeration)
                 .initiator(requester)
                 .createdOn(LocalDateTime.now())
                 .state(State.PENDING)
                 .build();
     }
 
-    public static Event toEvent(UpdateEventUserRequest eventDto) {
-        Event event = Event.builder()
-                .annotation(eventDto.getAnnotation())
-                .description(eventDto.getDescription())
-                .paid(eventDto.getPaid())
-                .participantLimit(eventDto.getParticipantLimit())
-                .requestModeration(eventDto.getRequestModeration())
-                .title(eventDto.getTitle())
-                .location(eventDto.getLocation())
-                .build();
-
-        if (event.getEventDate() != null) {
-                LocalDateTime eventDate =  LocalDateTime.parse(eventDto.getEventDate(), DateTimeFormat.formatter);
-                event.setEventDate(eventDate);
-        }
-
-        if (event.getCategory() != null) {
-            event.setCategory(Category.builder().id(eventDto.getCategory()).build());
-        }
-        return event;
-    }
-
-
     public static EventShortDto toEventShortDto(Event event) {
+        if (event.getPaid() == null) {
+            event.setPaid(false);
+        }
+
         return EventShortDto.builder()
                 .id(event.getId())
 //                TODO views
@@ -89,6 +65,10 @@ public class EventMapper {
 
 
     public static EventFullDto toEventFullDto(Event event) {
+        String publishedOn = "";
+        if (event.getPublishedOn() != null) {
+            publishedOn = event.getPublishedOn().toString();
+        }
         return EventFullDto.builder()
                 .id(event.getId())
                 .title(event.getTitle())
@@ -103,6 +83,8 @@ public class EventMapper {
                 .createdOn(event.getCreatedOn().format(DateTimeFormat.formatter))
                 .location(event.getLocation())
                 .requestModeration(event.getRequestModeration())
+                .publishedOn(publishedOn)
+                .confirmedRequests(event.getConfirmedRequests())
                 .build();
     }
 

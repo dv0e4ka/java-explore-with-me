@@ -20,7 +20,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handle(DateTimeEventException e) {
         log.error("получен статус 409 {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
@@ -55,7 +55,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handle(InvalidParameterException e) {
         log.error("получен статус ? {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());

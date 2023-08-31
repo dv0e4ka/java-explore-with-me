@@ -2,10 +2,11 @@ package org.example.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.exception.model.EntityNoFoundException;
+import org.example.user.dto.NewUserRequest;
 import org.example.user.dto.UserDto;
 import org.example.user.model.User;
 import org.example.user.repository.UserRepository;
-import org.example.user.util.UserMapper;
+import org.example.user.mapper.UserMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDto registerUser(UserDto userDto) {
+    public UserDto registerUser(NewUserRequest userDto) {
         User user = UserMapper.toUser(userDto);
         User userSaved = userRepository.save(user);
         return UserMapper.toUserDto(userSaved);

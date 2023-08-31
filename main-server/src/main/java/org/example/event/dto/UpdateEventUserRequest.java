@@ -17,6 +17,8 @@ public class UpdateEventUserRequest {
     @Size(min = 20, max = 2000, message = "поле annotation должно содержать от 2 до 2000 символов")
     String annotation;
     Long category;
+
+    @Size(min = 20, max = 7000, message = "поле annotation должно содержать от 2 до 2000 символов")
     String description;
     String eventDate;
     Location location;
