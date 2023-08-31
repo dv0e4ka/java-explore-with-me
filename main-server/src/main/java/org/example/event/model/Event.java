@@ -1,18 +1,13 @@
 package org.example.event.model;
 
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
 import org.example.categoriy.model.Category;
-import org.example.compilation.model.Compilation;
 import org.example.enums.State;
 import org.example.location.Location;
-import org.example.request.model.ParticipationRequest;
 import org.example.user.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter

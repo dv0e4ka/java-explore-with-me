@@ -1,7 +1,6 @@
 package org.example.event.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dto.EndpointHitDto;
 import org.example.enums.EventSort;
 import org.example.enums.State;
 import org.example.event.dto.EventFullDto;

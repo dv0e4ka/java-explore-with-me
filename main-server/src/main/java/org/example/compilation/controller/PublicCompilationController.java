@@ -2,7 +2,6 @@ package org.example.compilation.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.categoriy.service.PublicCategoryService;
 import org.example.compilation.dto.CompilationDto;
 import org.example.compilation.service.PublicCompilationService;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class PublicCompilationController {
     }
 
     @GetMapping("/{compId}")
-    public CompilationDto findById (@PathVariable long compId) {
+    public CompilationDto findById(@PathVariable long compId) {
         log.info("получен запрос на получение подборки события по id={}", compId);
         return compilationService.findById(compId);
     }

@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByIdIn(List<Long> eventIds);

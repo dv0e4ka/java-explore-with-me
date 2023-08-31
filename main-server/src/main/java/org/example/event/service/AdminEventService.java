@@ -13,5 +13,6 @@ public interface AdminEventService {
                                       List<Long> categoryIds,
                                       String rangeStart,
                                       String rangeEnd, int from, int size);
+
     EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest updateEvent);
 }

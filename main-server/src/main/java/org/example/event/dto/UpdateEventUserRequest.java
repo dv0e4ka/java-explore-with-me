@@ -2,13 +2,9 @@ package org.example.event.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.example.enums.PrivateStateAction;
 import org.example.location.Location;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data

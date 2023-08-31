@@ -304,7 +304,7 @@ public class PrivateEventServiceImpl implements PrivateEventService {
     private void checkDateTime(Event event) {
         LocalDateTime dateTime = event.getEventDate();
         LocalDateTime validLocalDateTime = LocalDateTime.now().plusHours(2);
-        if (dateTime == null ||  dateTime.isBefore(validLocalDateTime) ) {
+        if (dateTime == null ||  dateTime.isBefore(validLocalDateTime)) {
             throw new DateTimeEventException("Событие не удовлетворяет правилам создания, " +
                     "время создания ивента должно быть позже текущего на 2 часа");
         }

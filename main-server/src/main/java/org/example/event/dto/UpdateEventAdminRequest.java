@@ -6,8 +6,6 @@ import lombok.Setter;
 import org.example.enums.AdminStateAction;
 import org.example.location.Location;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Getter
