@@ -4,8 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-//TODO: доделать сущность
-
 @Getter
 @Setter
 @Table(name = "users")

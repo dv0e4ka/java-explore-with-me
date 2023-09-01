@@ -11,9 +11,9 @@ import java.util.List;
 @Setter
 @Builder
 public class UpdateCompilationRequest {
-    List<Long> events;
-    Boolean pinned;
+    private List<Long> events;
+    private Boolean pinned;
 
     @Size(min = 1, max = 50, message = "поле title должно содержать от 1 до 50 символов")
-    String title;
+    private String title;
 }

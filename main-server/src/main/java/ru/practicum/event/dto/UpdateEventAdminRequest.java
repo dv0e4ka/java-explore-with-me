@@ -19,13 +19,13 @@ public class UpdateEventAdminRequest {
     private String description;
 
     @Size(min = 3, max = 120, message = "поле title должно содержать от 3 до 120 символов")
-    String title;
+    private String title;
 
-    Long category;
-    String eventDate;
-    Location location;
-    Boolean paid;
-    Integer participantLimit;
-    Boolean requestModeration;
-    AdminStateAction stateAction;
+    private Long category;
+    private String eventDate;
+    private Location location;
+    private Boolean paid;
+    private Integer participantLimit;
+    private Boolean requestModeration;
+    private AdminStateAction stateAction;
 }
