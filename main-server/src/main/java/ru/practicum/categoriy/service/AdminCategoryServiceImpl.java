@@ -28,7 +28,6 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     @Transactional
     @Override
     public void deleteCategory(long catId) {
-        //    TODO: проверить удаление при наличии связаных событий(нужен каскад делейт)
         findCatById(catId);
         categoryRepository.deleteById(catId);
     }
