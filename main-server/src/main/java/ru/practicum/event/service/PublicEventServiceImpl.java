@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
-//    private final StatClient statsClient;
+    private final StatClient statsClient;
 
 
     @Transactional
@@ -93,13 +93,13 @@ public class PublicEventServiceImpl implements PublicEventService {
         String ip = request.getRemoteAddr();
         String path = request.getRequestURI();
 
-//        EndpointHitDto endpointHitDto = EndpointHitDto.builder()
-//                .app("main-server")
-//                .uri(path)
-//                .ip(ip)
-//                .timestamp(LocalDateTime.now().format(DateTimeFormat.formatter))
-//                .build();
-//        statsClient.add(endpointHitDto);
+        EndpointHitDto endpointHitDto = EndpointHitDto.builder()
+                .app("main-server")
+                .uri(path)
+                .ip(ip)
+                .timestamp(LocalDateTime.now().format(DateTimeFormat.formatter))
+                .build();
+        statsClient.add(endpointHitDto);
     }
 
     private void addViews(List<Event> events) {
