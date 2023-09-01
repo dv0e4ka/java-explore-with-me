@@ -13,7 +13,7 @@ public class ExcHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handle(DateTimeException e) {
-        log.error("получен статус 404 Not found {}", e.getMessage(), e);
+        log.error("получен статус Bad Request {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
 }
