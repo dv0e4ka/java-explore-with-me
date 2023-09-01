@@ -1,6 +1,7 @@
 package ru.practicum.app.service;
 
 import lombok.RequiredArgsConstructor;
+import ru.practicum.app.eror.DateTimeException;
 import ru.practicum.app.util.StatsMapper;
 import ru.practicum.app.model.EndpointHit;
 import ru.practicum.app.model.ViewStats;
@@ -29,6 +30,9 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        if (end.isBefore(start)) {
+            throw new DateTimeException("время начало не может быть позже окончания");
+        }
         List<ViewStats> viewStatsList;
         if (uris == null) {
             if (unique) {

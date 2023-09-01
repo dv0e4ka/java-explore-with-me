@@ -1,4 +1,4 @@
-package ru.practicum.exception.model;
+package ru.practicum.app.eror;
 
 public class ErrorResponse {
     private String error;
