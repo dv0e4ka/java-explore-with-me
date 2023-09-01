@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO заполнить маппер
 @UtilityClass
 public class EventMapper {
 
