@@ -1,8 +1,6 @@
 package ru.practicum.event.service;
 
 import lombok.RequiredArgsConstructor;
-import ru.practicum.StatClient;
-import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.enums.EventSort;
 import ru.practicum.enums.State;
 import ru.practicum.event.dto.EventFullDto;
@@ -10,6 +8,7 @@ import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.repository.EventRepository;
+import ru.practicum.event.service.statistics.StatisticsService;
 import ru.practicum.exception.model.EntityNoFoundException;
 import ru.practicum.exception.model.InvalidParameterException;
 import ru.practicum.util.DateTimeFormat;
@@ -21,12 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class PublicEventServiceImpl implements PublicEventService {
     private final EventRepository eventRepository;
-    private final StatClient statsClient;
+    private final StatisticsService statisticsService;
 
 
     @Transactional
@@ -90,20 +90,15 @@ public class PublicEventServiceImpl implements PublicEventService {
     }
 
     private void saveStatistic(HttpServletRequest request) {
-        String ip = request.getRemoteAddr();
-        String path = request.getRequestURI();
-
-        EndpointHitDto endpointHitDto = EndpointHitDto.builder()
-                .app("main-server")
-                .uri(path)
-                .ip(ip)
-                .timestamp(LocalDateTime.now().format(DateTimeFormat.formatter))
-                .build();
-        statsClient.add(endpointHitDto);
+        statisticsService.saveStats(request);
     }
 
     private void addViews(List<Event> events) {
-        events.forEach(event -> event.setViews(+1L));
-        eventRepository.saveAll(events);
+
+        Map<Long, Long> views = statisticsService.getViews(events);
+        for (Event event: events) {
+            long view = views.getOrDefault(event.getId(), 0L);
+            event.setViews(view);
+        }
     }
 }

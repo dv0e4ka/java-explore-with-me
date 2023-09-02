@@ -66,6 +66,7 @@ public class Event {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @Transient
     private long views;
 
 }
