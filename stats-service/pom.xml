@@ -9,14 +9,13 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>ru.practicum</groupId>
     <artifactId>stats-service</artifactId>
 
     <packaging>pom</packaging>
 
     <modules>
         <module>stats-client</module>
-        <module>service</module>
+        <module>stats-server</module>
         <module>stats-dto</module>
     </modules>
 
