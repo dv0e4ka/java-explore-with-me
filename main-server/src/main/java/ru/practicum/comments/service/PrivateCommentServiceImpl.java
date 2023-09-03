@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.comments.dto.CommentDto;
 import ru.practicum.comments.dto.NewCommentDto;
 import ru.practicum.comments.mapper.CommentMapper;
@@ -26,6 +27,7 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
+    @Transactional
     @Override
     public CommentDto addComment(long userId, NewCommentDto newCommentDto, long eventId) {
         User user = findUserById(userId);
@@ -40,6 +42,7 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
         return CommentMapper.toCommentDto(commentSaved);
     }
 
+    @Transactional
     @Override
     public CommentDto updateComment(long userId, long commentId, NewCommentDto newCommentDto) {
         findUserById(userId);
@@ -52,6 +55,7 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
         return CommentMapper.toCommentDto(commentUpdated);
     }
 
+    @Transactional
     @Override
     public void deleteComment(long userId, long commentId) {
         User user = findUserById(userId);
@@ -73,25 +77,25 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
         return CommentMapper.toCommentDtoList(commentList);
     }
 
-    User findUserById(long userId) {
+    private User findUserById(long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new EntityNoFoundException(String.format("пользователь id=%d не найден", userId))
         );
     }
 
-    Event findEventById(long eventId) {
+    private Event findEventById(long eventId) {
         return eventRepository.findById(eventId).orElseThrow(
                 () -> new EntityNoFoundException(String.format("событие id=%d не найдено", eventId))
         );
     }
 
-    Comment findCommentById(long commentId) {
+    private Comment findCommentById(long commentId) {
         return commentRepository.findById(commentId).orElseThrow(
                 () -> new EntityNoFoundException(String.format("комментарий id=%d не найден", commentId))
         );
     }
 
-    void checkIfNotPublished(Event event) {
+    private void checkIfNotPublished(Event event) {
         if (!event.getState().equals(State.PUBLISHED)) {
             throw new RequestException(String.format("событие id=%d не опубликовано", event.getId()));
         }
