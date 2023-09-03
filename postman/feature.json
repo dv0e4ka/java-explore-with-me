@@ -493,7 +493,7 @@
 									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function() {\r",
 									"    pm.expect(target.id).to.not.be.null;\r",
 									"    pm.expect(target.author.id).equal(pm.collectionVariables.get(\"uid\"), 'автор комментарий должно соответствовать автору комментария в запросе');\r",
-									"    pm.expect(target.event.id).equal(pm.collectionVariables.get(\"uid\"), 'событие комментария должно соответствовать автору комментария в запросе');\r",
+									"    pm.expect(target.event.id).equal(pm.collectionVariables.get(\"eid\"), 'событие комментария должно соответствовать автору комментария в запросе');\r",
 									"    pm.expect(target.text).equal(source.text, 'Текст комментарий должно соответствовать тексту комментария в запросе');\r",
 									"    pm.expect(target.createdOn).to.not.be.null;\r",
 									"});\r",
