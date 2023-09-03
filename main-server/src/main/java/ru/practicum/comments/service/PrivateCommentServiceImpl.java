@@ -94,6 +94,6 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
     void checkIfNotPublished(Event event) {
         if (!event.getState().equals(State.PUBLISHED)) {
             throw new RequestException(String.format("событие id=%d не опубликовано", event.getId()));
-        };
+        }
     }
 }
