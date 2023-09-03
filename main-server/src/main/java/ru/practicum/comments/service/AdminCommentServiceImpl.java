@@ -31,6 +31,4 @@ public class AdminCommentServiceImpl implements AdminCommentService {
         List<Comment> commentList = commentRepository.findAll(page).getContent();
         return CommentMapper.toCommentDtoList(commentList);
     }
-
-
 }

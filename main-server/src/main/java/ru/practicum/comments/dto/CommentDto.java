@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class CommentDto {
     private long id;
 
-    private UserShortDto commentator;
+    private UserShortDto author;
 
     private EventShortDto event;
 

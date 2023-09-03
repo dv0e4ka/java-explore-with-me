@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PublicCommentController {
-    PublicCommentService publicCommentService;
+    private final PublicCommentService publicCommentService;
 
 
     @GetMapping("/events/{eventId}/comments")

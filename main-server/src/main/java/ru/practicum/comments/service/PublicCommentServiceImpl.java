@@ -6,9 +6,11 @@ import ru.practicum.comments.dto.CommentDto;
 import ru.practicum.comments.mapper.CommentMapper;
 import ru.practicum.comments.model.Comment;
 import ru.practicum.comments.repository.CommentRepository;
+import ru.practicum.enums.State;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.repository.EventRepository;
 import ru.practicum.exception.model.EntityNoFoundException;
+import ru.practicum.exception.model.RequestException;
 
 import java.util.List;
 
@@ -23,6 +25,10 @@ public class PublicCommentServiceImpl implements PublicCommentService {
         Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> new EntityNoFoundException(String.format("событие id=%d не найдено", eventId))
         );
+
+        if (!event.getState().equals(State.PUBLISHED)) {
+            throw new RequestException(String.format("событие id=%d не опубликовано", event.getId()));
+        };
 
         List<Comment> commentList = commentRepository.findAllByEvent(event);
         return CommentMapper.toCommentDtoList(commentList);

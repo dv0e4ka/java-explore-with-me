@@ -24,7 +24,7 @@ public class CommentMapper {
     public static CommentDto toCommentDto(Comment comment) {
         return CommentDto.builder()
                 .id(comment.getId())
-                .commentator(UserMapper.toUserShortDto(comment.getAuthor()))
+                .author(UserMapper.toUserShortDto(comment.getAuthor()))
                 .event(EventMapper.toEventShortDto(comment.getEvent()))
                 .text(comment.getText())
                 .createdOn(comment.getCreatedOn())

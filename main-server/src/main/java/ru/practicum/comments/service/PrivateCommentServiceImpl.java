@@ -9,6 +9,7 @@ import ru.practicum.comments.dto.NewCommentDto;
 import ru.practicum.comments.mapper.CommentMapper;
 import ru.practicum.comments.model.Comment;
 import ru.practicum.comments.repository.CommentRepository;
+import ru.practicum.enums.State;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.repository.EventRepository;
 import ru.practicum.exception.model.EntityNoFoundException;
@@ -27,30 +28,22 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
 
     @Override
     public CommentDto addComment(long userId, NewCommentDto newCommentDto, long eventId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new EntityNoFoundException(String.format("пользователь id=%d не найден", userId))
-        );
-
-        Event event = eventRepository.findById(eventId).orElseThrow(
-                () -> new EntityNoFoundException(String.format("событие id=%d не найдено", eventId))
-        );
+        User user = findUserById(userId);
+        Event event = findEventById(eventId);
+        checkIfNotPublished(event);
 
         Comment comment = CommentMapper.toComment(newCommentDto);
         comment.setAuthor(user);
         comment.setEvent(event);
+
         Comment commentSaved = commentRepository.save(comment);
         return CommentMapper.toCommentDto(commentSaved);
     }
 
     @Override
     public CommentDto updateComment(long userId, long commentId, NewCommentDto newCommentDto) {
-        userRepository.findById(userId).orElseThrow(
-                () -> new EntityNoFoundException(String.format("пользователь id=%d не найден", userId))
-        );
-
-        Comment comment = commentRepository.findById(userId).orElseThrow(
-                () -> new EntityNoFoundException(String.format("комментарий id=%d не найден", userId))
-        );
+        findUserById(userId);
+        Comment comment = findCommentById(commentId);
 
         String text = newCommentDto.getText();
         comment.setText(text);
@@ -61,12 +54,8 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
 
     @Override
     public void deleteComment(long userId, long commentId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new EntityNoFoundException(String.format("пользователь id=%d не найден", userId))
-        );
-        Comment comment = commentRepository.findById(userId).orElseThrow(
-                () -> new EntityNoFoundException(String.format("комментарий id=%d не найден", userId))
-        );
+        User user = findUserById(userId);
+        Comment comment = findCommentById(commentId);
 
         if (user.getId() != comment.getAuthor().getId()) {
             throw new RequestException(String.format(
@@ -78,13 +67,33 @@ public class PrivateCommentServiceImpl implements PrivateCommentService {
 
     @Override
     public List<CommentDto> getAllCommentsByUser(long userId, int from, int size) {
+        User user = findUserById(userId);
         PageRequest page = PageRequest.of(from, size, Sort.by("id"));
-        User user = userRepository.findById(userId).orElseThrow(
+        List<Comment> commentList = commentRepository.findAllByAuthor(user, page).getContent();
+        return CommentMapper.toCommentDtoList(commentList);
+    }
+
+    User findUserById(long userId) {
+        return userRepository.findById(userId).orElseThrow(
                 () -> new EntityNoFoundException(String.format("пользователь id=%d не найден", userId))
         );
+    }
 
-        List<Comment> commentList = commentRepository.findAllByAuthor(user, page).getContent();
+    Event findEventById(long eventId) {
+        return eventRepository.findById(eventId).orElseThrow(
+                () -> new EntityNoFoundException(String.format("событие id=%d не найдено", eventId))
+        );
+    }
 
-        return CommentMapper.toCommentDtoList(commentList);
+    Comment findCommentById(long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(
+                () -> new EntityNoFoundException(String.format("комментарий id=%d не найден", commentId))
+        );
+    }
+
+    void checkIfNotPublished(Event event) {
+        if (!event.getState().equals(State.PUBLISHED)) {
+            throw new RequestException(String.format("событие id=%d не опубликовано", event.getId()));
+        };
     }
 }
